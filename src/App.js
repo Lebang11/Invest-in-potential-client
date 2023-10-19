@@ -2,10 +2,16 @@ import './App.css';
 
 function App() {
   return (
-    // simple start of table
     <div className="App">
+    {/* navbar */}
+    <nav class="navbar navbar-light bg-light mb-5">
+      <span class="navbar-brand mb-0 h1">Navbar</span>
+    </nav>
+
+    {/*  simple start of table */}
+    
         <div className="container">
-          <table className="table table-light">
+          <table className="table table-light table-striped-columns">
             <thead>
               <tr>
                 <th scope='col'>#</th>
