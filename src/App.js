@@ -1,19 +1,12 @@
 import './App.css';
 // axios for sending requests to our backend
 import axios from 'axios';
+import Users from './User';
 
 
 function App() {
   
-  // Trying to get users from database, refer to server side
-  const getUsers = async () => {
-    // learn about promises and async await
-    // fetches from our backend as a list of all user jsons
-    const users = await fetch('http://localhost:3000')
-                  .then(res => res.json())
-                  .then(res => console.log(res[0]))
-                  .catch(err=>console.log(err))
-  }
+  
 
   return (
     <div className="App">
@@ -21,7 +14,6 @@ function App() {
     <nav class="navbar navbar-light bg-light mb-5 justify-content-center align-items-center">
       <span class="navbar-brand  h1">Investing in Potential</span>
     </nav>
-    <button className="btn-lg" onClick={getUsers}>get users</button>
     {/*  simple start of table */}
     
         <div className="container">
@@ -39,13 +31,7 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope='row'>1</th>
-                <td>Lebang</td>
-                <td>Nong</td>
-                <td>0623997680</td>
-                <td>4</td>
-              </tr>
+              <Users/>
             </tbody>
           </table>
         </div>
