@@ -1,16 +1,17 @@
 import './App.css';
+// axios for sending requests to our backend
+import axios from 'axios';
+import Users from './User';
+import AddUser from './AddUser';
+
 
 function App() {
-
-  // Trying to get users from database, refer to server side
-
   return (
     <div className="App">
     {/* navbar */}
     <nav class="navbar navbar-light bg-light mb-5 justify-content-center align-items-center">
       <span class="navbar-brand  h1">Investing in Potential</span>
     </nav>
-
     {/*  simple start of table */}
     
         <div className="container">
@@ -28,15 +29,10 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope='row'>1</th>
-                <td>Lebang</td>
-                <td>Nong</td>
-                <td>0623997680</td>
-                <td>4</td>
-              </tr>
+              <Users/>
             </tbody>
           </table>
+              <AddUser/>
         </div>
     </div>
   );
