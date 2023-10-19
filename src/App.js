@@ -2,6 +2,8 @@ import './App.css';
 
 function App() {
 
+  // Trying to get users from database, refer to server side
+
   return (
     <div className="App">
     {/* navbar */}
