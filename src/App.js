@@ -2,12 +2,10 @@ import './App.css';
 // axios for sending requests to our backend
 import axios from 'axios';
 import Users from './User';
+import AddUser from './AddUser';
 
 
 function App() {
-  
-  
-
   return (
     <div className="App">
     {/* navbar */}
@@ -34,6 +32,7 @@ function App() {
               <Users/>
             </tbody>
           </table>
+              <AddUser/>
         </div>
     </div>
   );
