@@ -1,6 +1,5 @@
 
 import {useEffect, useState} from 'react';
-import App from './App';
 import axios from 'axios';
 
 const Users = () => {

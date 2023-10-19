@@ -1,6 +1,4 @@
 import './App.css';
-// axios for sending requests to our backend
-import axios from 'axios';
 import Users from './User';
 import AddUser from './AddUser';
 

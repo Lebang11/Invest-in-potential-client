@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import App from './App';
 import axios from 'axios';
 
 
@@ -27,7 +26,7 @@ const AddUser = () => {
     return ( 
         <div className="container-md">
             <button onClick={()=> {
-                if (showAdd==false) {
+                if (showAdd===false) {
                     setShowAdd(true)
                 } else {
                     setShowAdd(false)
