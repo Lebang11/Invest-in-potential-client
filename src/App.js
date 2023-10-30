@@ -1,38 +1,20 @@
 import './App.css';
 import Users from './User';
 import AddUser from './AddUser';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Members from './Members';
+import Register from './register';
+
 
 
 function App() {
   return (
-    <div className="App">
-    {/* navbar */}
-    <nav class="navbar navbar-light bg-light mb-5 justify-content-center align-items-center">
-      <span class="navbar-brand  h1">Investing in Potential</span>
-    </nav>
-    {/*  simple start of table */}
-    
-        <div className="container">
-          <h1 className="display-4 text-muted">
-            Members
-          </h1>
-          <table className="table table-light table-striped-columns">
-            <thead>
-              <tr>
-                <th scope='col'>#</th>
-                <th scope='col'>Name</th>
-                <th scope='col'>Surname</th>
-                <th scope='col'>Phone Number</th>
-                <th className='text-info' scope='col'>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              <Users/>
-            </tbody>
-          </table>
-              <AddUser/>
-        </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Members/>}/>
+        <Route path='/register' element={<Register/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
