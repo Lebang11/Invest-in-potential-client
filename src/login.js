@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
-
-const Register = () => {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,44 +13,31 @@ const Register = () => {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        
-        if (!username || !email || !password || !passwordConfirm) {
-            setError('Enter valid details')
-        } else if (password !== passwordConfirm) {
-            setPassword('')
-            setPasswordConfirm('')
-            setError('Passwords don\'t match')
-        } else if (password.length < 5) {
-            setPassword('')
-            setPasswordConfirm('')
-            setError('Password must be at least 5 characters')
-        }  else {
-
-            axios.post('https://investing-in-potential.onrender.com/admin',
+            e.preventDefault()
+            setError('')
+            axios.post('https://investing-in-potential.onrender.com/admin/login',
             {
-                username,
                 email,
                 password
             }
             )
-            .then(res => {
-                alert('User created successfully')
-                setUsername('')
+            .then(response => {
+                console.log(response.data)
+                Cookies.set('token_id', response.data._id , { expires: 7 });
+                Cookies.set('token_email', response.data.email , { expires: 7 });
+                Cookies.set('token_username', response.data.username , { expires: 7 });
+
+                alert('Logged In!')
+                
                 setEmail('')
                 setPassword('')
-                setPasswordConfirm('')
-                navigate('/login')
-                
+                navigate('/')
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setError(err.response.data.message);
+                setPassword('')
+            })
         }
-
-        
-
-
-        
-    }
 
 
 
@@ -60,23 +47,18 @@ const Register = () => {
                 <form className=" border p-4 rounded" onSubmit={(e) => {
                     handleSubmit(e)
                 }}>
-                    <h2 className="display-5 text-center text-muted">Sign Up</h2>
-                    <label for='email' className="form-label">Name and Surname</label>
-                    <input type="email" name="username" className="form-control" onChange={(e) => {
-                        setUsername(e.target.value)
-                    }} value={username}/>
+                    <h2 className="display-5 text-center text-muted">Sign In</h2>
+            
                     <label for='email' className="form-label" >Email Address</label>
                     <input type="email" name="email" className="form-control" onChange={(e) => {
                         setEmail(e.target.value)
                     }} value={email}/>
+                    
                     <label for='email' className="form-label">Password</label>
                     <input type="password" name="password" className="form-control"onChange={(e) => {
                         setPassword(e.target.value)
                     }} value={password}/>
-                    <label for='password-confirm' className="form-label">Confirm Password</label>
-                    <input type="password" name="password-confirm" className="form-control" onChange={(e) => {
-                        setPasswordConfirm(e.target.value)
-                    }} value={passwordConfirm}/>
+                    
                     <p className="text-danger text-center">{error}</p>
                     <div className="mt-3 d-flex justify-content-center">
                         <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
@@ -88,4 +70,4 @@ const Register = () => {
      );
 }
  
-export default Register;
+export default Login;

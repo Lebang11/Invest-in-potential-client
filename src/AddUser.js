@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie'
 
 
 const AddUser = () => {
@@ -11,15 +12,20 @@ const AddUser = () => {
 
 
     const addUser = async () => {
+        const editor = Cookies.get('token_username')
         axios.post('https://investing-in-potential.onrender.com', 
         {
             name,
             surname,
             phonenumber,
-            points
+            points,
+            editor
         }
         )
-        .then(res => console.log(res))
+        .then(res => {
+            alert('User added')
+            setShowAdd(false)
+            console.log(res)})
         .catch(err => console.log(err))
     }
 

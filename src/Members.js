@@ -1,17 +1,29 @@
 import './App.css';
 import Users from './User';
 import AddUser from './AddUser';
+import Cookies from 'js-cookie';
+
 
 
 function Members() {
+    console.log(Cookies.get('token_id'));
+    console.log(Cookies.get('token_username'));
+    console.log(Cookies.get('token_email'));
+
+    
+
+    
   return (
     <div className="App">
     {/* navbar */}
-    <nav class="navbar navbar-light bg-light mb-5 justify-content-center align-items-center">
+    <nav class="navbar navbar-light d-flex bg-light mb-5 justify-content-center align-items-center">
       <span class="navbar-brand  h1">Investing in Potential</span>
     </nav>
     {/*  simple start of table */}
-    
+    {Cookies.get('token_id') && Cookies.get('token_username') && Cookies.get('token_email') && 
+        <p className='text-center text-success'>Admin mode: <cite>{Cookies.get('token_username')}</cite></p>
+
+            }
         <div className="container">
           <h1 className="display-4 text-muted">
             Members
@@ -30,7 +42,12 @@ function Members() {
               <Users/>
             </tbody>
           </table>
+          <div className='mb-4'>
+          {Cookies.get('token_id') && Cookies.get('token_username') && Cookies.get('token_email') && 
               <AddUser/>
+            }
+          </div>
+            
         </div>
     </div>
   );
