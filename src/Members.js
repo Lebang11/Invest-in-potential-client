@@ -15,10 +15,6 @@ function Members() {
     
   return (
     <div className="App">
-    {/* navbar */}
-    <nav class="navbar navbar-light d-flex bg-light mb-5 justify-content-center align-items-center">
-      <span class="navbar-brand  h1">Investing in Potential</span>
-    </nav>
     {/*  simple start of table */}
     {Cookies.get('token_id') && Cookies.get('token_username') && Cookies.get('token_email') && 
         <p className='text-center text-success'>Admin mode: <cite>{Cookies.get('token_username')}</cite></p>
