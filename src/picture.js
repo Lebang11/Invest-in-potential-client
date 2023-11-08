@@ -14,7 +14,7 @@ const Picture = (props) => {
            getDownloadURL(downloadRef)
         .then((url) => {
             setImageDownload(url)
-            console.log(imageDownload) 
+            // console.log(imageDownload) 
         })
         .then(() => setLoading(false))
         .catch(err => console.log(err))

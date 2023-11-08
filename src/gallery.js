@@ -1,92 +1,76 @@
 import { useEffect, useState } from "react";
 import { storage } from "./firebase";
-import { uploadBytes, getStorage, ref, getDownloadURL, getBlob } from "firebase/storage";
+import { uploadBytes, getStorage, ref, getDownloadURL, getBlob, uploadBytesResumable } from "firebase/storage";
 import Picture from "./picture";
 import axios from "axios";
 
 
 const Gallery = () => {
     const [pictures, setPictures] = useState([]);
-    const [images, setImages] = useState(null);
+    const [imagename, setImagename] = useState(null);
+    const [images, setImages] = useState([]);
+    const [file, setFile] = useState(null)
     const [imageDownload, setImageDownload] =  useState([]);
     const [isLoading, setLoading] = useState(true);
 
     const fetchImages = async () => {
-        const images = await fetch('https://investing-in-potential.onrender.com/images')
+        await fetch('https://investing-in-potential.onrender.com/gallery')
                   .then(res => res.json())
-                  .then(res => setImages(res))
+                  .then(response => setImages(response))
                   .catch(err=>console.log(err))
     }
 
 
+
+    const uploadImage = async () => {
+      uploadFile()
+      await axios.post('https://investing-in-potential.onrender.com/gallery', 
+      {
+        imagename
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    }
+
+    const uploadFile = () => {
+      if (file === null) return;
+      
+      const imageRef = ref(storage, `images/${imagename}`);
+      uploadBytes(imageRef, file).then(() => {
+          alert('File Uploaded, name: ' + imagename)
+      })
+      .then(res => window.location.reload(false))
+    }
+
+    useEffect(() => {
+      fetchImages()
+    }, [])
     
     
     return ( 
         <div class="container">
 
-  <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Gallery</h1>
+    <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Gallery</h1>
 
-  <hr class="mt-2 mb-5"/>
-
-  <div class="row text-center text-lg-start">
-
-        <Picture imagename="IMG-20231107-WA0004.jpg"/>
-      
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/aob0ukAYfuI/400x300" alt=""/>
-      </a>
+    <hr class="mt-2 mb-5"/>
+    <div className="btn-group w-75">
+      <input className="form-control w-75" id="file" type="file" onChange={async (e) => {
+                      setImagename(e.target.files[0].name)
+                      setFile(e.target.files[0])
+                    }} />
+      <button className="btn btn-success w-25" onClick={uploadImage}>Upload</button>
     </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/EUfxH-pze7s/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/M185_qYH8vg/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/sesveuG_rNo/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/AvhMzHwiE_0/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/2gYsZUmockw/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/EMSDtjVHdQ8/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/8mUEy0ABdNE/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/G9Rfc1qccH4/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/aJeH0KcFkuc/400x300" alt=""/>
-      </a>
-    </div>
-    <div class="col-lg-3 col-md-4 col-6">
-      <a href="#" class="d-block mb-4 h-100">
-        <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/p2TQ-3Bh3Oo/400x300" alt=""/>
-      </a>
-    </div>
+    
+    <div class="row text-center text-lg-start">
+    
+        {
+          images.map((image) => {
+            return (
+            <Picture imagename={image.imagename}/> 
+          )})
+        }
+     
+    
   </div>
 
 </div>
