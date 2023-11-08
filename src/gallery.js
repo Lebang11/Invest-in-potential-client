@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { storage } from "./firebase";
 import { uploadBytes, getStorage, ref, getDownloadURL, getBlob, uploadBytesResumable } from "firebase/storage";
-import Picture from "./picture";
+import Picture from "./pictures";
 import axios from "axios";
 
 
@@ -47,6 +47,7 @@ const Gallery = () => {
     }, [])
     
     
+    
     return ( 
         <div class="container">
 
@@ -66,7 +67,7 @@ const Gallery = () => {
         {
           images.map((image) => {
             return (
-            <Picture imagename={image.imagename}/> 
+            <Picture imagename={image.imagename} imageDownload={imageDownload}/> 
           )})
         }
      
