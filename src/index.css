@@ -8,7 +8,7 @@
 
   #intro {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background: url("../public/IMG-20231107-WA0004.jpg") center center;
     background-size: cover;
     position: relative;
