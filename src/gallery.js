@@ -17,6 +17,7 @@ const Gallery = () => {
         await fetch('https://investing-in-potential.onrender.com/gallery')
                   .then(res => res.json())
                   .then(response => setImages(response))
+                  .then(res => setLoading(false))
                   .catch(err=>console.log(err))
     }
 
@@ -61,7 +62,15 @@ const Gallery = () => {
                     }} />
       <button className="btn btn-success w-25" onClick={uploadImage}>Upload</button>
     </div>
-    
+    {isLoading && 
+                    <tbody>
+                        <h1 class="lead text-center" type="button" disabled>
+                      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                      Loading Images...
+                      </h1>
+                    </tbody>
+                      
+                      }
     <div class="row text-center text-lg-start">
     
         {

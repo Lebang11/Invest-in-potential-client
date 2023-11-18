@@ -34,9 +34,9 @@ function Members() {
                 <th className='text-info' scope='col'>Points</th>
               </tr>
             </thead>
-            <tbody>
+          
               <Users/>
-            </tbody>
+            
           </table>
           <div className='mb-4'>
           {Cookies.get('token_id') && Cookies.get('token_username') && Cookies.get('token_email') && 

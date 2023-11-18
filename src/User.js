@@ -7,6 +7,7 @@ const Users = () => {
     // learn useState
     const [users, setUsers] = useState([]);
     const [addedPoints, setPoints] = useState(0);
+    const [isLoading, setLoading] = useState(true)
 
 
     // Trying to get users from database, refer to server side
@@ -16,6 +17,7 @@ const Users = () => {
     const users = await fetch('https://investing-in-potential.onrender.com')
                   .then(res => res.json())
                   .then(res => setUsers(res))
+                  .then(res => setLoading(false))
                   .catch(err=>console.log(err))
 
     // next I'm adding a react component that uses each user to add on the list
@@ -33,13 +35,25 @@ const Users = () => {
    
     let count = 0;
     return (
-        users.map((user) => {
+        <tbody>
+            {isLoading && 
+                    <tbody>
+                        <h1 class="lead text-center" type="button" disabled>
+                      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                      Loading... Might take a while...
+                      </h1>
+                    </tbody>
+                      
+                      }
+            {users.map((user) => {
         count +=1;
         
         return ( 
             <UserRow getUsers={getUsers} user={user} count={count}/>
-     );
-    })
+        );
+        })}
+        </tbody>
+        
     )
     
     
