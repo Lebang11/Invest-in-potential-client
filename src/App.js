@@ -7,6 +7,8 @@ import Register from './register';
 import Login from './login';
 import NavBar from './navbar';
 import Gallery from './gallery';
+import Footer from './Footer';
+import Landing from './landing';
 
 
 
@@ -15,11 +17,13 @@ function App() {
     <BrowserRouter>
       <NavBar/>
       <Routes>
-        <Route path='/' element={<Members/>}/>
+        <Route path='/' element={<Landing/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/gallery' element={<Gallery/>}/>
+        <Route path='/members' element={<Members/>}/>
       </Routes>
+      <Footer/>
     </BrowserRouter>
   );
 }

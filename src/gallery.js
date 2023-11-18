@@ -54,8 +54,8 @@ const Gallery = () => {
     <h1 class="fw-light text-center text-lg-start mt-4 mb-0">Gallery</h1>
 
     <hr class="mt-2 mb-5"/>
-    <div className="btn-group w-75">
-      <input className="form-control w-75" id="file" type="file" onChange={async (e) => {
+    <div className="btn-group w-75 mb-2">
+      <input className="form-control w-75 rounded-0" id="file" type="file" onChange={async (e) => {
                       setImagename(e.target.files[0].name)
                       setFile(e.target.files[0])
                     }} />

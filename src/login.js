@@ -9,12 +9,14 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setLoading] = useState(false)
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
             e.preventDefault()
             setError('')
+            setLoading(true)
             axios.post('https://investing-in-potential.onrender.com/admin/login',
             {
                 email,
@@ -31,12 +33,18 @@ const Login = () => {
                 
                 setEmail('')
                 setPassword('')
+                setLoading(false)
+
                 navigate('/')
             })
             .catch(err => {
                 setError(err.response.data.message);
                 setPassword('')
+                setLoading(false)
+
             })
+
+
         }
 
 
@@ -61,7 +69,13 @@ const Login = () => {
                     
                     <p className="text-danger text-center">{error}</p>
                     <div className="mt-3 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                        {!isLoading &&  <button type="submit" class='btn btn-primary'>Submit</button>}
+                        {isLoading && 
+                        <button class="btn btn-secondary" type="button" disabled>
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                        </button>
+                        }
                     </div>
                 </form>
             </div>

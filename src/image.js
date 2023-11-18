@@ -2,11 +2,11 @@ const Image = (props) => {
     return ( 
         <div>
             <div>
-            <a type="button" class="d-block mb-4 h-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <a type="button" class="d-block mb-4 h-100">
                     <img class="img-fluid img-thumbnail" src={props.imageDownload} alt=""/>
                 </a> 
             </div>
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            {/* <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content bg-light">
                     <div class="modal-header">
@@ -21,11 +21,11 @@ const Image = (props) => {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        {/* <button type="button" class="btn btn-primary">Save changes</button> */}
+                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
      );
 }
