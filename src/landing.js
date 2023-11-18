@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Landing = () => {
     return ( 
-        <section id="hero" class="d-flex flex-column justify-content-center align-items-center mt-0">
+        <section id="intro" class="d-flex flex-column justify-content-center align-items-center mt-0">
         <div class="container text-center text-md-left" data-aos="fade-up">
           <h1>Welcome to <span>IIP</span>
           
