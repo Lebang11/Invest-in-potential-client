@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .reg-form {
     display: flex;
     justify-content: center;
@@ -14,6 +18,11 @@
     position: relative;
     margin-top: 70px;
     padding: 0;
+  }
+
+  #about {
+    height: 50vh;
+    background-color: rgb(216, 216, 216);
   }
   
   #intro:before {
