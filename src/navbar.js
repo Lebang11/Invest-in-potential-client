@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 const NavBar = () => {
     return ( 
 
@@ -13,7 +15,10 @@ const NavBar = () => {
                 </button>
                 <div class="collapse navbar-collapse justify-content-end me-4" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-link active" aria-current="page" href="/members">Members</a>
+                        {
+                            Cookies.get('token_id') && Cookies.get('token_username') && Cookies.get('token_email') &&
+                            <a class="nav-link active" aria-current="page" href="/members">Members</a>
+                        }
                         <a class="nav-link" href="/gallery">Gallery</a>
                     </div>
                 </div>
