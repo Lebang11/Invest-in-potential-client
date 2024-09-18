@@ -48,7 +48,7 @@ const AboutMore = () => {
                     }
                     return (
                         <div className={`row flex-row${flexdirection} my-4 mx-2`}>
-                            <div className="col-xs-6 d-flex flex-column justify-content-center align-items-center">                            
+                            <div className="col-md-6 col-sm-12 col-xs-12 d-flex flex-column justify-content-center align-items-center">                            
                                 <div className="col-sm-6 text-center d-flex flex-column justify-content-center align-items-center">
                                 <h3 className="display-6">{info.header}</h3>
                                 <h5 className="fw-bold fst-italic">{info.title}</h5>
@@ -58,8 +58,10 @@ const AboutMore = () => {
                             </div>
                             </div>
 
-                            <div className="col-xs-6 d-flex flex-column justify-content-center align-items-center">
-                                <img src={info.image} height="300"></img>
+                            <div className="px-4 col-md-6 col-sm-12 col-xs-12 d-flex flex-column justify-content-center align-items-center">
+                                <img src={info.image} height="300" style={{
+                                    maxWidth:"90vw"
+                                }}></img>
                             </div>
                         </div>            
                     )
