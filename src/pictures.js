@@ -15,20 +15,23 @@ const Picture = (props) => {
            getDownloadURL(downloadRef)
         .then((url) => {
             setImageDownload(url)
-            // console.log(imageDownload) 
+            
         })
         .then(() => setLoading(false))
-        .catch(err => console.log(err))
+        .catch(err => setImageDownload("not found"))
     }
 
     useEffect(() => {
 
         getPictures(props.imagename)
     }, [])
+    if (imageDownload == "not found") {
+        return <></>
+    }
     return (
-        <div class="col-lg-3 col-md-4 col-6">
+   
             <Image imageDownload={imageDownload} imagename={props.imagename}/>
-        </div> 
+      
         
         
      );

@@ -1,5 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Lato";
+  font-weight: 400;
 }
 
 .reg-form {
@@ -12,20 +19,38 @@ html {
 
   #intro {
     width: 100%;
-    height: 100vh;
-    background: url("../public/IMG-20231107-WA0004.jpg") center center;
-    background-size: cover;
+    /* height: 50vh; */
+    background-color: white;
+    /* background: url("../public/IMG-20231107-WA0004.jpg") center center; */
+    /* background-size: cover; */
     position: relative;
     margin-top: 70px;
     padding: 0;
   }
 
   #about {
-    height: 50vh;
+    /* height: 50vh; */
     background-color: rgb(216, 216, 216);
   }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
   
-  #intro:before {
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  main {
+    flex: 1; /* This will make the content area grow and push the footer down */
+  }
+  
+  /* #intro:before {
     content: "";
     background: rgba(56, 64, 70, 0.7);
     position: absolute;
@@ -45,8 +70,8 @@ html {
     font-weight: 700;
     line-height: 56px;
     color: #fff;
-  }
-  
+  } */
+/*   
   #intro h1 span {
     border-bottom: 4px solid #3498db;
   }
@@ -73,23 +98,12 @@ html {
   
   #intro .btn-get-started:hover {
     background: #4ea5e0;
-  }
+  } */
   
   @media (max-width: 992px) {
-    #intro {
-      height: calc(100vh - 70px);
-    }
+    
   }
   
   @media (max-width: 768px) {
-    #intro h1 {
-      font-size: 30px;
-      line-height: 36px;
-    }
-  
-    #intro h2 {
-      font-size: 18px;
-      line-height: 24px;
-      margin-bottom: 30px;
-    }
+    
   }
