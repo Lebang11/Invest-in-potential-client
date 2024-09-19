@@ -1,7 +1,15 @@
+import {motion} from 'framer-motion';
+import {useInView} from 'react-intersection-observer';
+
 const Intro = () => {
+    const {ref, inView} = useInView({
+        triggerOnce: false,
+        threshold: 0.1
+    })
+
     return ( 
         <section id="intro" class=" d-flex flex-column justify-content-start align-items-center mt-5 px-4">
-          <div class="row mt-0 text-center text-md-left " style={{
+          <motion.div ref={ref} initial={{opacity:0, x:-300}} animate= {inView ? {opacity:1, x:0} : {opacity:0, }} transition={{duration:2}} class="row mt-0 text-center text-md-left " style={{
             maxWidth: "1300px"
           }}>
             <div className='col-sm d-flex flex-column justify-content-center align-items-center'>
@@ -21,7 +29,7 @@ const Intro = () => {
               
             </div>
             
-          </div>
+          </motion.div>
         </section>
      );
 }

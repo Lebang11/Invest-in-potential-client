@@ -8,8 +8,8 @@ const Footer = () => {
             color:"gray",
             maxWidth: "50vw"
           }}>
-            <div>
-              <img src="IIP official logo.png" height={40}></img>
+            <div className='pb-3'>
+              <img src="IIP white logo mark.png" height={40}></img>
             </div>
             <div style={{
               fontSize:"0.8rem"
