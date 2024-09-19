@@ -50,6 +50,12 @@ body {
     flex: 1; /* This will make the content area grow and push the footer down */
   }
   
+  .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: darkgray;
+    opacity: 0.5; /* Firefox */
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
   /* #intro:before {
     content: "";
     background: rgba(56, 64, 70, 0.7);

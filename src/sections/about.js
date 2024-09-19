@@ -10,7 +10,9 @@ const About = () => {
         <section style={{
           backgroundColor:"rgb(20, 20, 20)"
         }} id="about" class="w-100 d-flex flex-column align-items-center text-light pb-4">
-          <div className='container-xl pb-4'>
+          <div className='container-xl pb-4' style={{
+            maxWidth: "1300px"
+          }}>
             {/* <h1 className="text-light my-4 text-center">ABOUT US</h1> */}
             <div className='row container-xl mb-4 overflow-auto' >
                 <div className='col-sm-6'>

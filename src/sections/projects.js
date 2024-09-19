@@ -1,9 +1,14 @@
-const Intro = () => {
+const Projects = () => {
     return ( 
-        <section id="intro" class=" d-flex flex-column justify-content-start align-items-center mt-5 px-4">
-          <div class="row mt-0 text-center text-md-left " style={{
-            maxWidth: "1300px"
+        <section id="projects" class=" d-flex flex-column justify-content-start align-items-center mt-5 px-4">
+          <h1 className="display-4">Projects</h1>
+          {/* <p className="text-muted lead">Coming soon...</p> */}
+          <div style={{
+            height:"200px"
           }}>
+            <img src="abstract-grunge-style-coming-soon-with-black-splatter.png" height={200}></img>
+          </div>
+          {/* <div class="row mt-0 text-center text-md-left ">
             <div className='col-sm d-flex flex-column justify-content-center align-items-center'>
               <h4 className=''>Welcome to <span>IIP</span>
               </h4>
@@ -21,9 +26,9 @@ const Intro = () => {
               
             </div>
             
-          </div>
+          </div> */}
         </section>
      );
 }
  
-export default Intro;
+export default Projects;

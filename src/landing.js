@@ -1,6 +1,8 @@
 
 import About from './sections/about';
+import Contact from './sections/contact';
 import Intro from './sections/intro';
+import Projects from './sections/projects';
 
 const Landing = () => {
 
@@ -8,7 +10,8 @@ const Landing = () => {
       <> 
         <Intro/>
         <About/>
-        
+        <Projects/>
+        <Contact/>
       </>
      );
 }
