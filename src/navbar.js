@@ -19,29 +19,43 @@ const NavBar = () => {
                     <div class="navbar-nav">
                         {
                             Cookies.get('token_id') && Cookies.get('token_username') && Cookies.get('token_email') &&
-                            <a class="nav-link active" aria-current="page" href="/members">Members</a>
+                            <a style={{
+                                fontSize:"0.8rem"
+                            }} class="nav-link active" aria-current="page" href="/members">Members</a>
                         }
-                        <Link class="nav-link" to="/gallery">Gallery</Link>
+                        <Link style={{
+                            fontSize:"0.8rem"
+                        }} class="nav-link" to="/gallery">Gallery</Link>
                     </div>
                     <div class="navbar-nav">
                         
-                        <Link class="nav-link" to="/#about">About</Link>
+                        <Link style={{
+                            fontSize:"0.8rem"
+                        }} class="nav-link" to="/#about">About</Link>
                     </div>
                     <div class="navbar-nav">
                         
-                        <Link class="nav-link" to="/">Projects</Link>
+                        <Link style={{
+                            fontSize:"0.8rem"
+                        }} class="nav-link" to="/">Projects</Link>
                     </div>
                     <div class="navbar-nav">
                         
-                        <Link class="nav-link" to="/">Contact Us</Link>
+                        <Link style={{
+                            fontSize:"0.8rem"
+                        }} class="nav-link" to="/">Contact Us</Link>
                     </div>
                     <div class="navbar-nav">
                         
-                        <Link class="nav-link" to="/login">Login</Link>
+                        <Link style={{
+                            fontSize:"0.8rem"
+                        }} class="nav-link" to="/login">Login</Link>
                     </div>
                     <div class="navbar-nav">
                         
-                        <Link class="nav-link" to="/register">Register</Link>
+                        <Link style={{
+                            fontSize:"0.8rem"
+                        }} class="nav-link" to="/register">Register</Link>
                     </div>
 
 

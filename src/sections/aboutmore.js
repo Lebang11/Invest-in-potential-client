@@ -35,7 +35,7 @@ const AboutMore = () => {
 
 
     return ( 
-        <div id="about-more" className='collapse bg-dark w-100'>
+        <div id="about-more" className=' bg-dark w-100'>
         <div class="d-flex flex-column w-100">
             
             {

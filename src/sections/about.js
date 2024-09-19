@@ -11,7 +11,7 @@ const About = () => {
           backgroundColor:"rgb(20, 20, 20)"
         }} id="about" class="w-100 d-flex flex-column align-items-center text-light pb-4">
           <div className='container-xl pb-4'>
-            <h1 className="text-light my-4 text-center">ABOUT US</h1>
+            {/* <h1 className="text-light my-4 text-center">ABOUT US</h1> */}
             <div className='row container-xl mb-4 overflow-auto' >
                 <div className='col-sm-6'>
                   <div className='d-flex container justify-content-center'>
@@ -20,11 +20,10 @@ const About = () => {
                 </div>
                 <div className='col-sm-6 d-flex justify-content-center align-items-center'>
                   <div className='container' >
-                    <p className="mx-3 text-center " style={{
-                      fontSize: "0.7rem"
-                    }}>Investing in you to help you invest in yourself. <br></br> 
-                    Welcome to "Investing in Yourself Inc.", where our mission is to empower you for comprehensive growth across multiple dimensions – cognitive, emotional, ethical, spiritual, physical, existential, and, naturally, financial. Embark on a transformative journey with us as we assist individuals and entrepreneurs in navigating a multidimensional path to success.</p>
-                    <a class="d-flex btn btn-outline-secondary justify-content-center mb-5" data-bs-toggle="collapse" href="#about-more" role="button" aria-expanded="false" aria-controls="about-more" onClick={() => {
+                    <p className="mx-3 text-center fst-italic" style={{
+                      fontSize: "0.8rem"
+                    }}>In Investing in Potential, we guide your growth in financial literacy, entrepreneurship, and personal development. Our structured course equips you with the skills to succeed professionally and personally, helping you reach your full potential.</p>
+                    {/* <a class="d-flex btn btn-outline-secondary justify-content-center mb-5" data-bs-toggle="collapse" href="#about-more" role="button" aria-expanded="false" aria-controls="about-more" onClick={() => {
                       if (showMessage === "Show more") {
                         setShowMessage("Show less")
                       } else {
@@ -32,7 +31,7 @@ const About = () => {
                       }
                     }}>
                         {showMessage}
-                    </a>
+                    </a> */}
                   </div>
                 </div>
                <AboutMore/>
