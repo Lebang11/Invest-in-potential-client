@@ -1,3 +1,5 @@
+import MotionHeader from "../motion/motionheading";
+
 const Contact = () => {
     return ( 
         // take out styleing
@@ -9,7 +11,7 @@ const Contact = () => {
             width: "90vw",
             maxWidth:"800px"
           }}>
-            <h1 className="display-4 text-center mt-3 text-light">Contact Us</h1>
+            <h1 className="display-4 text-center mt-3 text-light"><MotionHeader header={"Contact Us".split("")}/></h1>
             <form className="d-flex flex-column justify-content-center align-items-center">
                 <input style={{
                     backgroundColor: "rgb(20, 20, 20)",
@@ -23,7 +25,7 @@ const Contact = () => {
                     backgroundColor: "rgb(20, 20, 20)",
                     borderColor:"white"
                 }} className=" form-control mt-3 w-75 rounded-0" placeholder="What's on your mind?"/>
-                <button className="mt-3 rounded-0 btn btn-outline-light" onClick={(e) => {
+                <button disabled className="mt-3 rounded-0 btn btn-outline-light" onClick={(e) => {
                     e.preventDefault();
                 }}>Submit</button>
 

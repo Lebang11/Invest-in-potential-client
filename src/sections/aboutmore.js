@@ -1,4 +1,15 @@
+import {motion} from 'framer-motion';
+import {useInView} from 'react-intersection-observer';
+import MotionHeader from '../motion/motionheading';
+import MotionImage from '../motion/motionimage';
+
 const AboutMore = () => {
+    const {ref, inView} = useInView({
+        triggerOnce: false,
+        threshold: 0
+    })
+  
+
     const information = [
         {
             "header": "About Us",
@@ -40,6 +51,7 @@ const AboutMore = () => {
             
             {
                 information.map((info) => {
+                    let infoHeader = info.header.split("");
                     let flexdirection = " "
                     if (information.indexOf(info) % 2 != 0) {
                         flexdirection = "-reverse ";
@@ -50,19 +62,17 @@ const AboutMore = () => {
                         <div className={`row flex-row${flexdirection} my-4 mx-2`}>
                             <div className="col-md-6 col-sm-12 col-xs-12 d-flex flex-column justify-content-center align-items-center">                            
                                 <div className="col-sm-6 text-center d-flex flex-column justify-content-center align-items-center">
-                                <h3 className="display-6">{info.header}</h3>
+                                <h3 className="display-6">
+                                    <MotionHeader header={infoHeader}/>
+                                   </h3>
                                 <h5 className="fw-bold fst-italic">{info.title}</h5>
                                 <p style={{
                                     fontSize:"0.6rem"
                                 }}>{info.body}</p>
                             </div>
                             </div>
-
-                            <div className="px-4 col-md-6 col-sm-12 col-xs-12 d-flex flex-column justify-content-center align-items-center">
-                                <img src={info.image} height="300" style={{
-                                    maxWidth:"90vw"
-                                }}></img>
-                            </div>
+                            <MotionImage info ={info}/>
+                            
                         </div>            
                     )
                 })
