@@ -25,7 +25,7 @@ const About = () => {
             <div className='row container-xl mb-4 overflow-auto' >
                 <motion.div ref={ref} initial={{opacity:0, x:-100}} animate={inView ? {opacity:1, x:0} : {opacity:0, x:-100}} transition={{duration:3}} className='col-sm-6'>
                   <div className='d-flex container justify-content-center'>
-                    <img src={'gallery/A1D90854-2ED1-4714-BBA9-4D3B3D19D155.jpeg'} className=' m-3 w-100 rounded mw-100'></img>
+                    <img src={'gallery/A1D90854-2ED1-4714-BBA9-4D3B3D19D155-min.jpeg'} className=' m-3 w-100 rounded mw-100'></img>
                   </div>
                 </motion.div>
                 <motion.div ref={ref} initial={{opacity:0}} animate={inView? {opacity:1} : {opacity:0}} transition={{duration:3}} className='col-sm-6 d-flex justify-content-center align-items-center'>
