@@ -18,12 +18,12 @@ function App() {
       <NavBar/>
       <main>
         <Routes>
-        <Route path='/' element={<Landing/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/gallery' element={<Gallery/>}/>
-        <Route path='/members' element={<Members/>}/>
-      </Routes>
+          <Route path='/' element={<Landing/>}/>
+          <Route path='/register' element={<Register/>}/>
+          <Route path='/login' element={<Login/>}/>
+          <Route path='/gallery' element={<Gallery/>}/>
+          <Route path='/members' element={<Members/>}/>
+        </Routes>
       </main>
       
       <Footer/>
