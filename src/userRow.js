@@ -8,7 +8,7 @@ const UserRow = (props) => {
 
 
     const editPoints = (id, points) => {
-        axios.post('https://investing-in-potential.onrender.com/points',
+        axios.post('https://investing-in-potential-server.vercel.app/points',
         {   
             id, 
             points

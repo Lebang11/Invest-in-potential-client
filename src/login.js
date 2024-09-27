@@ -17,7 +17,7 @@ const Login = () => {
             e.preventDefault()
             setError('')
             setLoading(true)
-            axios.post('https://investing-in-potential.onrender.com/admin/login',
+            axios.post('https://investing-in-potential-server.vercel.app/admin/login',
             {
                 email,
                 password

@@ -27,7 +27,7 @@ const Register = () => {
             setError('Password must be at least 5 characters')
         }  else {
 
-            axios.post('https://investing-in-potential.onrender.com/admin',
+            axios.post('https://investing-in-potential-server.vercel.app/admin',
             {
                 username,
                 email,

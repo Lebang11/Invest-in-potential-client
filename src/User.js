@@ -14,7 +14,7 @@ const Users = () => {
   const getUsers = async () => {
     // learn about promises and async await
     // fetches from our backend as a list of all user jsons
-    const users = await fetch('https://investing-in-potential.onrender.com')
+    const users = await fetch('https://investing-in-potential-server.vercel.app')
                   .then(res => res.json())
                   .then(res => setUsers(res))
                   .then(res => setLoading(false))

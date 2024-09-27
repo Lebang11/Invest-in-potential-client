@@ -13,7 +13,7 @@ const AddUser = () => {
 
     const addUser = async () => {
         const editor = Cookies.get('token_username')
-        axios.post('https://investing-in-potential.onrender.com', 
+        axios.post('https://investing-in-potential-server.vercel.app', 
         {
             name,
             surname,
