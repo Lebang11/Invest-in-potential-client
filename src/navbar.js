@@ -17,12 +17,12 @@ const NavBar = () => {
                 </button>
                 <div class="collapse navbar-collapse justify-content-end me-4" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        {
+                        {/* {
                             Cookies.get('token_id') && Cookies.get('token_username') && Cookies.get('token_email') &&
                             <a style={{
                                 fontSize:"0.8rem"
-                            }} class="nav-link active" aria-current="page" href="/members">Members</a>
-                        }
+                            }} class="nav-link" aria-current="page" href="/members">Members</a>
+                        } */}
                         <Link style={{
                             fontSize:"0.8rem"
                         }} class="nav-link" to="/gallery">Gallery</Link>
@@ -45,6 +45,12 @@ const NavBar = () => {
                             fontSize:"0.8rem"
                         }} class="nav-link" to="/">Contact Us</Link>
                     </div>
+                    {/* <div class="navbar-nav">
+                        
+                        <Link style={{
+                            fontSize:"0.8rem"
+                        }} class="nav-link" to="/clients">Clients</Link>
+                    </div> */}
                     <div class="navbar-nav">
                         
                         <Link style={{

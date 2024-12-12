@@ -3,13 +3,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
+
 const Login = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [error, setError] = useState('');
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ const Login = () => {
             e.preventDefault()
             setError('')
             setLoading(true)
-            axios.post('https://investing-in-potential-server.vercel.app/admin/login',
+            axios.post(process.env.REACT_APP_BACKEND_URL + '/admin/login',
             {
                 email,
                 password

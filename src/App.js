@@ -9,10 +9,12 @@ import NavBar from './navbar';
 import Gallery from './gallery';
 import Footer from './Footer';
 import Landing from './landing';
+import ClientPortal from './clientPortal';
 
 
 
 function App() {
+  
   return (
     <BrowserRouter>
       <NavBar/>
@@ -23,6 +25,7 @@ function App() {
           <Route path='/login' element={<Login/>}/>
           <Route path='/gallery' element={<Gallery/>}/>
           <Route path='/members' element={<Members/>}/>
+          <Route path='/clients' element={<ClientPortal/>}/>
         </Routes>
       </main>
       
