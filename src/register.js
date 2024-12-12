@@ -27,7 +27,7 @@ const Register = () => {
             setError('Password must be at least 5 characters')
         }  else {
 
-            axios.post('https://investing-in-potential-server.vercel.app/user',
+            axios.post('https://cors-anywhere.herokuapp.com/https://investing-in-potential-server.vercel.app/user',
             {
                 username,
                 email,
