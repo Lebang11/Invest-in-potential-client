@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import JobCard from './jobCard';
 
 const ClientPortal = () => {
     const [jobs, setJobs] = useState([]);
+
+    const getDirectDriveLink = (shareableLink) => {
+      const fileIdRegex = /\/d\/([a-zA-Z0-9_-]+)/;
+      const match = shareableLink.match(fileIdRegex);
+    
+      if (match && match[1]) {
+        return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+      }
+      return null;
+    };
+
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -259,47 +271,11 @@ const ClientPortal = () => {
                                 const appliedPercentage = job.teamSize > 0 ? (job.applied / job.teamSize) * 100 : 0;
                                 const daysAgo = calculateDaysAgo(job.postedDate);
 
+                                
+
+
                                 return (
-                                    <div className="col-md-4 mb-4" key={index}>
-                                        <div className="card p-3 h-100">
-                                            {/* Job Header */}
-                                            {/* Job Image */}
-                                            <p><strong>IIP's cut:</strong> <span className='text-success'> {job.cut}%</span></p>
-                                            <p><strong>Net Payment:</strong> R{netPrice} (For whole team)</p>
-
-                                            {/* Displaying Points */}
-                                            <p><strong>Points:</strong> {job.points || 0} points each</p>
-
-                                            {/* Apply Button */}
-                                            <div className="mt-4">
-                                                <button
-                                                    style={{ backgroundColor:'black', borderColor:'black' }}
-                                                    className="btn btn-primary w-100"
-                                                    onClick={() => handleApply(job.id)} // Pass jobId for applying
-                                                >
-                                                    Apply
-                                                </button>
-                                            </div>
-
-                                            {/* Progress Bar */}
-                                            <div className="progress mt-4">
-                                                <div
-                                                    className="progress-bar"
-                                                    role="progressbar"
-                                                    style={{ width: `${appliedPercentage}%` }}
-                                                    aria-valuenow={appliedPercentage}
-                                                    aria-valuemin="0"
-                                                    aria-valuemax="100"
-                                                ></div>
-                                            </div>
-                                            <div className="mt-2">
-                                                <span className="text1">
-                                                    {job.applied || 0} Applied{" "}
-                                                    <span className="text2">of {job.teamSize} capacity</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <JobCard job={job} getDirectDriveLink= {getDirectDriveLink} netPrice={netPrice} handleApply={handleApply} appliedPercentage = {appliedPercentage}/>
                                 );
                             })}
                         </div>
