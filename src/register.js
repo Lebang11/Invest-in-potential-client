@@ -43,7 +43,15 @@ const Register = () => {
                 navigate('/login')
                 
             })
-            .catch(err => console.log(err))
+            .catch( err => {
+                console.log(err)
+                alert('Error encountered')
+                setUsername('')
+                setEmail('')
+                setPassword('')
+                setPasswordConfirm('')
+            }
+                )
         }
 
         

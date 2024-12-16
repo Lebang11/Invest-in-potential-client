@@ -19,7 +19,7 @@ const ClientPortal = () => {
 
     useEffect(() => {
         // Fetch jobs from the server when the component mounts
-        axios.get('https://investing-in-potential-server.vercel.app/api/jobs')
+        axios.get('https://investing-in-potential-server.vercel.app/jobs')
             .then(response => {
                 setJobs(response.data);
             })
@@ -28,7 +28,7 @@ const ClientPortal = () => {
             });
 
         // Fetch logged-in user info from your server (example)
-        axios.get('https://investing-in-potential-server.vercel.app/api/user')
+        axios.get('https://investing-in-potential-server.vercel.app/user')
             .then(response => {
                 setUser(response.data);
             })
@@ -60,7 +60,7 @@ const ClientPortal = () => {
         const newJob = { ...formData, postedDate: new Date().toLocaleDateString() };
 
         // POST the new job to the server
-        axios.post('https://investing-in-potential-server.vercel.app/api/jobs', newJob)
+        axios.post('https://investing-in-potential-server.vercel.app/jobs', newJob)
             .then(response => {
                 setJobs([...jobs, response.data]); // Add the new job to the state
                 setFormData({
@@ -91,7 +91,7 @@ const ClientPortal = () => {
 
         if (job.applied < job.teamSize) {
             // POST the application to the server
-            axios.post('https://investing-in-potential-server.vercel.app/api/apply', {
+            axios.post('https://investing-in-potential-server.vercel.app/apply', {
                 jobId: jobId,
                 userId: user.id, // Assuming user ID is available
                 points: 10,       // Points for applying
