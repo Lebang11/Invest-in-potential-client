@@ -61,7 +61,7 @@ const NavBar = () => {
                     <div class="navbar-nav">
                         <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/gallery">Gallery</Link>
                     </div>
-                    {isAdmin && (
+                    {isLoggedIn && (
                         <div class="navbar-nav">
                             <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/clients">Client Portal</Link>
                         </div>
