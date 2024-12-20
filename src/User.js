@@ -1,6 +1,5 @@
-
 import {useEffect, useState} from 'react';
-import axios from 'axios';
+import { api, endpoints } from './config/api';
 import UserRow from './userRow';
 
 const Users = () => {
@@ -12,16 +11,15 @@ const Users = () => {
 
     // Trying to get users from database, refer to server side
   const getUsers = async () => {
-    // learn about promises and async await
-    // fetches from our backend as a list of all user jsons
-    const users = await fetch('https://investing-in-potential-server.vercel.app')
-                  .then(res => res.json())
-                  .then(res => setUsers(res))
-                  .then(res => setLoading(false))
-                  .catch(err=>console.log(err))
-
-    // next I'm adding a react component that uses each user to add on the list
-    }   
+    try {
+        const response = await api.get(endpoints.users);
+        setUsers(response.data);
+        setLoading(false);
+    } catch (err) {
+        console.log(err);
+        setLoading(false);
+    }
+  }   
 
     
 

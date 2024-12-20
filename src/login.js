@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api, endpoints } from './config/api';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -15,38 +15,32 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-            e.preventDefault()
-            setError('')
-            setLoading(true)
-            axios.post(process.env.REACT_APP_BACKEND_URL + '/admin/login',
-            {
-                email,
-                password
-            }
-            )
-            .then(response => {
-                console.log(response.data)
-                Cookies.set('token_id', response.data._id , { expires: 7 });
-                Cookies.set('token_email', response.data.email , { expires: 7 });
-                Cookies.set('token_username', response.data.username , { expires: 7 });
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+        
+        api.post(endpoints.login, {
+            email,
+            password
+        })
+        .then(response => {
+            console.log(response.data);
+            Cookies.set('token_id', response.data._id, { expires: 7 });
+            Cookies.set('token_email', response.data.email, { expires: 7 });
+            Cookies.set('token_username', response.data.username, { expires: 7 });
 
-                alert('Logged In!')
-                
-                setEmail('')
-                setPassword('')
-                setLoading(false)
-
-                navigate('/')
-            })
-            .catch(err => {
-                setError(err.response.data.message);
-                setPassword('')
-                setLoading(false)
-
-            })
-
-
-        }
+            alert('Logged In!');
+            setEmail('');
+            setPassword('');
+            setLoading(false);
+            navigate('/');
+        })
+        .catch(err => {
+            setError(err.response.data.message);
+            setPassword('');
+            setLoading(false);
+        });
+    }
 
 
 

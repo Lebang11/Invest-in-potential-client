@@ -26,7 +26,7 @@ const JobCard = (props) => {
                                                 <button
                                                     style={{ backgroundColor:'black', borderColor:'black' }}
                                                     className="btn btn-primary w-100"
-                                                    onClick={() => props.handleApply(props.job.id)} // Pass jobId for applying
+                                                    onClick={() => props.handleApply(props.job.title)} // Pass jobId for applying
                                                 >
                                                     Apply
                                                 </button>

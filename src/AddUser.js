@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import Cookies from 'js-cookie'
+import { api, endpoints } from './config/api';
 
 
 const AddUser = () => {
@@ -13,20 +13,20 @@ const AddUser = () => {
 
     const addUser = async () => {
         const editor = Cookies.get('token_username')
-        axios.post('https://investing-in-potential-server.vercel.app', 
-        {
-            name,
-            surname,
-            phonenumber,
-            points,
-            editor
+        try {
+            const response = await api.post(endpoints.users, {
+                name,
+                surname,
+                phonenumber,
+                points,
+                editor
+            });
+            alert('User added');
+            setShowAdd(false);
+            console.log(response);
+        } catch (err) {
+            console.log(err);
         }
-        )
-        .then(res => {
-            alert('User added')
-            setShowAdd(false)
-            console.log(res)})
-        .catch(err => console.log(err))
     }
 
     return ( 

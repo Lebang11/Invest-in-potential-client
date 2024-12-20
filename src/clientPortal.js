@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import JobCard from './jobCard';
+import Cookies from 'js-cookie'
+import { api, endpoints } from './config/api';
 
 const ClientPortal = () => {
     const [jobs, setJobs] = useState([]);
@@ -27,25 +29,21 @@ const ClientPortal = () => {
         points: 0,   // Points for applying
     });
     const [points, setPoints] = useState(0); // Track user points
-    const [user, setUser] = useState(null); // Track logged-in user
+    const user = {
+      email: Cookies.get('token_email'),
+      id: Cookies.get('token_id')
+    }
 
     useEffect(() => {
-        // Fetch jobs from the server when the component mounts
-        axios.get('https://investing-in-potential-server.vercel.app/jobs')
+        console.log("User email: " + user.email)
+        console.log("User id: " + user.id)
+
+        api.get(endpoints.jobs)
             .then(response => {
                 setJobs(response.data);
             })
             .catch(error => {
                 console.error('Error fetching jobs:', error);
-            });
-
-        // Fetch logged-in user info from your server (example)
-        axios.get('https://investing-in-potential-server.vercel.app/user')
-            .then(response => {
-                setUser(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching user info:', error);
             });
     }, []);
 
@@ -92,28 +90,31 @@ const ClientPortal = () => {
             });
     };
 
-    const handleApply = (jobId) => {
+    const handleApply = (jobTitle) => {
         if (!user) {
             alert('You must be logged in to apply.');
             return;
         }
 
-        const job = jobs.find(job => job.id === jobId);
+        console.log("User applying: " + user)
+
+        const job = jobs.find(job => job.title === jobTitle);
         if (!job) return;
 
         if (job.applied < job.teamSize) {
             // POST the application to the server
-            axios.post('https://investing-in-potential-server.vercel.app/apply', {
-                jobId: jobId,
-                userId: user.id, // Assuming user ID is available
-                points: 10,       // Points for applying
+            axios.post('https://investing-in-potential-server.vercel.app/applications', {
+                email: user.email,
+                name: user.name,
+                points,
+                job: jobTitle
             })
             .then(response => {
-                const updatedJobs = jobs.map(job => job.id === jobId
+                const updatedJobs = jobs.map(job => job.title === jobTitle
                     ? { ...job, applied: job.applied + 1 }
                     : job);
                 setJobs(updatedJobs);
-                setPoints(points + 10); // Add points for applying
+                // setPoints(points + 10); // Add points for applying
                 alert(`You have applied for the job: ${job.title}.`);
             })
             .catch(error => {

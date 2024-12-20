@@ -1,4 +1,4 @@
-import axios from "axios";
+import { api, endpoints } from './config/api';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,31 +9,38 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setLoading] = useState(false);
+
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setLoading(true)
         
         if (!username || !email || !password || !passwordConfirm) {
             setError('Enter valid details')
+            setLoading(false)
+
         } else if (password !== passwordConfirm) {
             setPassword('')
             setPasswordConfirm('')
             setError('Passwords don\'t match')
+            setLoading(false)
+
         } else if (password.length < 5) {
             setPassword('')
             setPasswordConfirm('')
             setError('Password must be at least 5 characters')
+            setLoading(false)
+            
         }  else {
 
-            axios.post('https://investing-in-potential-server.vercel.app/user',
-            {
+            api.post(endpoints.register, {
                 username,
                 email,
                 password
-            }
-            )
+            })
             .then(res => {
                 alert('User created successfully')
                 setUsername('')
@@ -41,6 +48,7 @@ const Register = () => {
                 setPassword('')
                 setPasswordConfirm('')
                 navigate('/login')
+                setLoading(false)
                 
             })
             .catch( err => {
@@ -50,9 +58,12 @@ const Register = () => {
                 setEmail('')
                 setPassword('')
                 setPasswordConfirm('')
+                setError('Error')
+                setLoading(false)
             }
                 )
         }
+
 
         
 
@@ -69,8 +80,8 @@ const Register = () => {
                     handleSubmit(e)
                 }}>
                     <h2 className="display-5 text-center text-muted">Sign Up</h2>
-                    <label for='email' className="form-label">Name and Surname</label>
-                    <input type="email" name="username" className="form-control" onChange={(e) => {
+                    <label for='username' className="form-label">Name and Surname</label>
+                    <input type="text" name="username" className="form-control" onChange={(e) => {
                         setUsername(e.target.value)
                     }} value={username}/>
                     <label for='email' className="form-label" >Email Address</label>
@@ -87,7 +98,13 @@ const Register = () => {
                     }} value={passwordConfirm}/>
                     <p className="text-danger text-center">{error}</p>
                     <div className="mt-3 d-flex justify-content-center">
-                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                        {!isLoading &&  <button type="submit" class='btn btn-primary'>Submit</button>}
+                        {isLoading && 
+                            <button class="btn btn-secondary" type="button" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </button>
+                        }
                     </div>
                 </form>
             </div>

@@ -10,27 +10,30 @@ import Gallery from './gallery';
 import Footer from './Footer';
 import Landing from './landing';
 import ClientPortal from './clientPortal';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 
 function App() {
   
   return (
-    <BrowserRouter>
-      <NavBar/>
-      <main>
-        <Routes>
-          <Route path='/' element={<Landing/>}/>
-          <Route path='/register' element={<Register/>}/>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/gallery' element={<Gallery/>}/>
-          <Route path='/members' element={<Members/>}/>
-          <Route path='/clients' element={<ClientPortal/>}/>
-        </Routes>
-      </main>
-      
-      <Footer/>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <NavBar/>
+        <main>
+          <Routes>
+            <Route path='/' element={<Landing/>}/>
+            <Route path='/register' element={<Register/>}/>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/gallery' element={<Gallery/>}/>
+            <Route path='/members' element={<Members/>}/>
+            <Route path='/clients' element={<ClientPortal/>}/>
+          </Routes>
+        </main>
+        
+        <Footer/>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }
 
