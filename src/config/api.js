@@ -14,5 +14,6 @@ export const endpoints = {
   jobs: '/jobs',
   applications: '/applications',
   login: '/login',
-  register: '/user'
+  register: '/user',
+  contact: '/email'
 }; 
