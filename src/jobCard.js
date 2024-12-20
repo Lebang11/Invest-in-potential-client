@@ -7,7 +7,10 @@ const JobCard = (props) => {
                                         <div className="card p-3 h-100">
                                             {/* Job Header */}
                                             {/* Job Image */}
-                                                <img src={"jobs/" + props.job.image} alt="Google Drive" style={{ width: "100%", maxWidth: "400px" }} />
+                                            <div className='d-flex justify-content-center'>
+                                            <img src={"jobs/" + props.job.image} alt="Google Drive" style={{ width: "100%", maxWidth: "400px" }} />
+
+                                            </div>
                                                 <h6 className='fs-6 fst-italic text-center mt-3' >{props.job.title}</h6>
                                            
                                             <p className='text-muted my-3'>{props.job.description}</p>

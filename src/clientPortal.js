@@ -6,6 +6,8 @@ import { api, endpoints } from './config/api';
 
 const ClientPortal = () => {
     const [jobs, setJobs] = useState([]);
+    const isAdmin = Cookies.get('token_admin') === 'true';
+
 
     const getDirectDriveLink = (shareableLink) => {
       const fileIdRegex = /\/d\/([a-zA-Z0-9_-]+)/;
@@ -90,9 +92,27 @@ const ClientPortal = () => {
             });
     };
 
-    const handleApply = (jobTitle) => {
+    const checkIfApplied = async (jobTitle) => {
+        const userEmail = Cookies.get('token_email');
+        
+        try {
+            const response = await api.get(`${endpoints.applications}?email=${userEmail}&job=${jobTitle}`);
+            return response.data.length > 0;  // Returns true if user has already applied
+        } catch (error) {
+            console.error('Error checking application status:', error);
+            return false;
+        }
+    };
+
+    const handleApply = async (jobTitle) => {
         if (!user) {
             alert('You must be logged in to apply.');
+            return;
+        }
+
+        const alreadyApplied = await checkIfApplied(jobTitle);
+        if (alreadyApplied) {
+            alert('You have already applied for this job.');
             return;
         }
 
@@ -113,7 +133,6 @@ const ClientPortal = () => {
                 const updatedJobs = jobs.map(job => job.title === jobTitle
                     ? { ...job, applied: job.applied + 1 }
                     : job);
-                setJobs(updatedJobs);
                 // setPoints(points + 10); // Add points for applying
                 alert(`You have applied for the job: ${job.title}.`);
             })
@@ -126,142 +145,145 @@ const ClientPortal = () => {
         }
     };
   return (
-    <div className="container my-5">
-      <h1 className="text-center mb-4">Client Portal</h1>
+    <div style={{ paddingTop: "100px" }}>
+        <div className="container">
+            <h1 className="text-center mb-4">Client Portal</h1>
 
-      {/* Job Form */}
-      <div className="card mb-4">
-        <div style={{ backgroundColor: 'black' }} className="card-header text-white">Post a New Job</div>
-        <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="title" className="form-label">Job Title</label>
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                name="title"
-                placeholder="Enter job title"
-                value={formData.title}
-                onChange={handleChange}
-                required
-              />
+            {/* Job Form */}
+            {isAdmin && (
+            <div className="card mb-4">
+                <div style={{ backgroundColor: 'black' }} className="card-header text-white">Post a New Job</div>
+                <div className="card-body">
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="title" className="form-label">Job Title</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="title"
+                                name="title"
+                                placeholder="Enter job title"
+                                value={formData.title}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="description" className="form-label">Job Description</label>
+                            <textarea
+                                className="form-control"
+                                id="description"
+                                name="description"
+                                rows="3"
+                                placeholder="Enter job description"
+                                value={formData.description}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="category" className="form-label">Category</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="category"
+                                name="category"
+                                placeholder="e.g., Marketing, Software Engineering"
+                                value={formData.category}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-3 mb-3">
+                                <label htmlFor="price" className="form-label">Price/Budget(R)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="price"
+                                    name="price"
+                                    placeholder="Enter price or budget"
+                                    value={formData.price}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="col-md-3 mb-3">
+                                <label htmlFor="points" className="form-label">Points</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="points"
+                                    name="points"
+                                    placeholder="Enter points for applying"
+                                    value={formData.points}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="col-md-3 mb-3">
+                                <label htmlFor="duration" className="form-label">Duration</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="duration"
+                                    name="duration"
+                                    placeholder="e.g., 2 weeks, 3 months"
+                                    value={formData.duration}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="col-md-3 mb-3">
+                                <label htmlFor="cut" className="form-label">IIP's Cut (%)</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="cut"
+                                    name="cut"
+                                    placeholder="Enter IIP's cut percentage"
+                                    value={formData.cut}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                            <div className="col-md-3 mb-3">
+                                <label htmlFor="teamSize" className="form-label">Team Size</label>
+                                <input
+                                    type="number"
+                                    className="form-control"
+                                    id="teamSize"
+                                    name="teamSize"
+                                    placeholder="Enter team size"
+                                    value={formData.teamSize}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="image" className="form-label">Job Image</label>
+                            <input
+                                type="file"
+                                className="form-control"
+                                id="image"
+                                name="image"
+                                onChange={handleFileChange}
+                            />
+                        </div>
+
+                        <button type="submit" style={{ backgroundColor: 'black' }} className="btn text-light w-100">Post Job</button>
+                    </form>
+                </div>
             </div>
+            )}
 
-            <div className="mb-3">
-              <label htmlFor="description" className="form-label">Job Description</label>
-              <textarea
-                className="form-control"
-                id="description"
-                name="description"
-                rows="3"
-                placeholder="Enter job description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="category" className="form-label">Category</label>
-              <input
-                type="text"
-                className="form-control"
-                id="category"
-                name="category"
-                placeholder="e.g., Marketing, Software Engineering"
-                value={formData.category}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="row">
-              <div className="col-md-3 mb-3">
-                <label htmlFor="price" className="form-label">Price/Budget(R)</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="price"
-                  name="price"
-                  placeholder="Enter price or budget"
-                  value={formData.price}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="col-md-3 mb-3">
-                <label htmlFor="points" className="form-label">Points</label>
-                <input
-                    type="number"
-                    className="form-control"
-                    id="points"
-                    name="points"
-                    placeholder="Enter points for applying"
-                    value={formData.points}
-                    onChange={handleChange}
-                    required
-                />
-            </div>
-              <div className="col-md-3 mb-3">
-                <label htmlFor="duration" className="form-label">Duration</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="duration"
-                  name="duration"
-                  placeholder="e.g., 2 weeks, 3 months"
-                  value={formData.duration}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="col-md-3 mb-3">
-                <label htmlFor="cut" className="form-label">IIP's Cut (%)</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="cut"
-                  name="cut"
-                  placeholder="Enter IIP's cut percentage"
-                  value={formData.cut}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="col-md-3 mb-3">
-                <label htmlFor="teamSize" className="form-label">Team Size</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="teamSize"
-                  name="teamSize"
-                  placeholder="Enter team size"
-                  value={formData.teamSize}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="image" className="form-label">Job Image</label>
-              <input
-                type="file"
-                className="form-control"
-                id="image"
-                name="image"
-                onChange={handleFileChange}
-              />
-            </div>
-
-            <button type="submit" style={{ backgroundColor: 'black' }} className="btn text-light w-100">Post Job</button>
-          </form>
-        </div>
-      </div>
-
-     {/* Job Listings */}
-     <div className="card">
+            {/* Job Listings */}
+            <div className="card">
                 <div className="card-header bg-light text-dark">Posted Jobs</div>
                 <div className="card-body">
                     {jobs.length > 0 ? (
@@ -285,7 +307,7 @@ const ClientPortal = () => {
                     )}
                 </div>
             </div>
-
+        </div>
     </div>
   );
 };

@@ -27,7 +27,9 @@ const Login = () => {
             console.log(response.data);
             Cookies.set('token_id', response.data._id, { expires: 7 });
             Cookies.set('token_email', response.data.email, { expires: 7 });
-            Cookies.set('token_username', response.data.username, { expires: 7 });
+            Cookies.set('token_username', response.data.name, { expires: 7 });
+            Cookies.set('token_admin', response.data.admin, { expires: 7 });
+            Cookies.set('token_points', response.data.points, { expires: 7 });
 
             alert('Logged In!');
             setEmail('');
