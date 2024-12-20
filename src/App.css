@@ -1,0 +1,12 @@
+.logo-small {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .logo-large {
+        display: none;
+    }
+    .logo-small {
+        display: inline;
+    }
+}

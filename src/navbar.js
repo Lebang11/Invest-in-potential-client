@@ -51,7 +51,10 @@ const NavBar = () => {
             <div class="container-fluid">
                 <div className="justify-content-center">
                     <Link class="navbar-brand" to="/">
-                        <span><img src="IIP official logo.png" height="60" alt="IIP Logo"></img></span>
+                        <span>
+                            <img src="IIP official logo.png" className="logo-large" height="60" alt="IIP Logo" />
+                            <img src="IIP logo mark.png" className="logo-small" height="60" alt="IIP Logo" />
+                        </span>
                     </Link>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
