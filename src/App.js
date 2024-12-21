@@ -11,8 +11,10 @@ import Footer from './Footer';
 import Landing from './landing';
 import ClientPortal from './clientPortal';
 import ErrorBoundary from './components/ErrorBoundary';
-
-
+import CourseSignup from './CourseSignup';
+import AssessmentTests from './AssessmentTests';
+import PaymentGateway from './PaymentGateway';
+import TestRules from './TestRules';
 
 function App() {
   
@@ -28,6 +30,10 @@ function App() {
             <Route path='/gallery' element={<Gallery/>}/>
             <Route path='/members' element={<Members/>}/>
             <Route path='/clients' element={<ClientPortal/>}/>
+            <Route path='/course-signup' element={<CourseSignup/>}/>
+            <Route path='/assessment' element={<AssessmentTests/>}/>
+            <Route path='/payment' element={<PaymentGateway/>}/>
+            <Route path='/test-rules' element={<TestRules/>}/>
           </Routes>
         </main>
         

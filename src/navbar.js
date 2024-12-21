@@ -87,6 +87,9 @@ const NavBar = () => {
                             Projects
                         </button>
                     </div>
+                    {/* <div class="navbar-nav">
+                        <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/course-signup">Course Signup</Link>
+                    </div> */}
                     <div class="navbar-nav">
                         <button 
                             onClick={() => scrollToSection('contact')}

@@ -15,5 +15,6 @@ export const endpoints = {
   applications: '/applications',
   login: '/login',
   register: '/user',
-  contact: '/email'
+  contact: '/email',
+  initializePayment: '/payment/initialize'
 }; 
