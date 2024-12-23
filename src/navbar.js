@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import { Link, useNavigate } from 'react-router-dom';
 import { UserStatus } from './components/UserStatus';
 import { useState, useEffect } from "react";
+import { scrollToSection } from './utils/scrollUtils';
 
 const NavBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,42 +35,33 @@ const NavBar = () => {
         navigate('/');
     };
 
-    const scrollToSection = (sectionId) => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            navigate('/#' + sectionId);
-        }
-    };
-
     return ( 
-        <nav class="navbar navbar-expand-sm border-bottom w-100 fixed-top" style={{
-            backgroundColor:"white",
-            zIndex: 1000
+        <nav className="navbar navbar-expand-lg fixed-top" style={{
+            backgroundColor: "white",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.0)"
         }}>
-            <div class="container-fluid">
+            <div className="container-fluid">
                 <div className="justify-content-center">
-                    <Link class="navbar-brand" to="/">
+                    <Link className="navbar-brand" to="/">
                         <span>
                             <img src="IIP official logo.png" className="logo-large" height="60" alt="IIP Logo" />
                             <img src="IIP logo mark.png" className="logo-small" height="60" alt="IIP Logo" />
                         </span>
                     </Link>
                 </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end me-4" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/gallery">Gallery</Link>
+                <div className="collapse navbar-collapse justify-content-end me-4" id="navbarNavAltMarkup">
+                    <div className="navbar-nav">
+                        <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/gallery">Gallery</Link>
                     </div>
                     {isLoggedIn && (
-                        <div class="navbar-nav">
-                            <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/clients">Client Portal</Link>
+                        <div className="navbar-nav">
+                            <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/clients">Client Portal</Link>
                         </div>
                     )}
-                    <div class="navbar-nav">
+                    <div className="navbar-nav">
                         <button 
                             onClick={() => scrollToSection('about')}
                             className="nav-link"
@@ -78,7 +70,7 @@ const NavBar = () => {
                             About
                         </button>
                     </div>
-                    <div class="navbar-nav">
+                    <div className="navbar-nav">
                         <button 
                             onClick={() => scrollToSection('projects')}
                             className="nav-link"
@@ -87,10 +79,10 @@ const NavBar = () => {
                             Projects
                         </button>
                     </div>
-                    {/* <div class="navbar-nav">
-                        <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/course-signup">Course Signup</Link>
+                    {/* <div className="navbar-nav">
+                        <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/course-signup">Course Signup</Link>
                     </div> */}
-                    <div class="navbar-nav">
+                    <div className="navbar-nav">
                         <button 
                             onClick={() => scrollToSection('contact')}
                             className="nav-link"
@@ -102,7 +94,7 @@ const NavBar = () => {
                     {isLoggedIn ? (
                         <>
                             <UserStatus />
-                            <div class="navbar-nav">
+                            <div className="navbar-nav">
                                 <button 
                                     onClick={handleLogout}
                                     className="nav-link"
@@ -115,11 +107,11 @@ const NavBar = () => {
                         </>
                     ) : (
                         <>
-                            <div class="navbar-nav">
-                                <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/login">Login</Link>
+                            <div className="navbar-nav">
+                                <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/login">Login</Link>
                             </div>
-                            <div class="navbar-nav">
-                                <Link style={{fontSize:"0.8rem"}} class="nav-link" to="/register">Register</Link>
+                            <div className="navbar-nav">
+                                <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/register">Register</Link>
                             </div>
                         </>
                     )}

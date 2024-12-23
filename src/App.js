@@ -15,6 +15,7 @@ import CourseSignup from './CourseSignup';
 import AssessmentTests from './AssessmentTests';
 import PaymentGateway from './PaymentGateway';
 import TestRules from './TestRules';
+import WeeklyOutline from './components/WeeklyOutline';
 
 function App() {
   
@@ -34,6 +35,7 @@ function App() {
             <Route path='/assessment' element={<AssessmentTests/>}/>
             <Route path='/payment' element={<PaymentGateway/>}/>
             <Route path='/test-rules' element={<TestRules/>}/>
+            <Route path='/weekly-outline' element={<WeeklyOutline/>}/>
           </Routes>
         </main>
         

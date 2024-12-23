@@ -1,7 +1,7 @@
 const Projects = () => {
     return ( 
         <section id="projects" class=" d-flex flex-column justify-content-start align-items-center mt-5 px-4">
-          <h1 className="display-4">Projects</h1>
+          <h1 className="display-4">Our Projects</h1>
           {/* <p className="text-muted lead">Coming soon...</p> */}
           <div style={{
             height:"200px"

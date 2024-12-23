@@ -1,5 +1,6 @@
 import {motion} from 'framer-motion';
 import {useInView} from 'react-intersection-observer';
+import intakeInfo from '../utils/intakeInfo';
 
 const Intro = () => {
     const {ref, inView} = useInView({
@@ -16,7 +17,11 @@ const Intro = () => {
               <h4 className=''>Welcome to <span>IIP</span>
               </h4>
               <p className=' lead'>Empowering youth in tech and business. Dive into a world of growth, inspiration, and success. Join us as we talk business and build futures together! </p>
-
+              <div className="alert alert-info rounded-0 mt-2 w-100" style={{ fontSize: '0.9rem' }}>
+                <strong>Next Intake:</strong> {intakeInfo.currentIntake.startDate}
+                <br />
+                <strong>Application Deadline:</strong> {intakeInfo.currentIntake.applicationDeadline}
+              </div>
             </div>
             <div className='col-sm d-flex justify-content-center align-items-center' style={{
               // minHeight: "500px"
