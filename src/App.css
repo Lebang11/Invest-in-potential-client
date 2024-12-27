@@ -10,3 +10,30 @@
         display: inline;
     }
 }
+
+.navbar-nav {
+    display: flex;
+    justify-content: center; /* Center the items */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.navbar-nav .nav-link {
+    text-align: center; /* Center text within the links */
+}
+
+/* src/App.css */
+.navbar-nav {
+    display: flex;
+    justify-content: center; /* Center the items */
+    width: 100%; /* Ensure it takes full width */
+}
+
+.navbar-nav .nav-link {
+    text-align: center; /* Center text within the links */
+}
+
+.navbar-nav .nav-item {
+    display: flex;
+    justify-content: center; /* Center the nav items */
+    align-items: center; /* Align items vertically */
+}

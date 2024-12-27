@@ -16,5 +16,13 @@ export const endpoints = {
   login: '/login',
   register: '/user',
   contact: '/email',
-  initializePayment: '/payment/initialize'
+  initializePayment: '/payment/initialize',
+  payments: '/payments',
+  assessments: '/assessments',
+  admin: {
+    payments: '/admin/payments',
+    users: '/admin/users',
+    assessments: '/admin/assessments',
+    stats: '/admin/stats'
+  }
 }; 

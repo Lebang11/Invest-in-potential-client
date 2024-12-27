@@ -16,6 +16,7 @@ import AssessmentTests from './AssessmentTests';
 import PaymentGateway from './PaymentGateway';
 import TestRules from './TestRules';
 import WeeklyOutline from './components/WeeklyOutline';
+import AdminPortal from './AdminPortal';
 
 function App() {
   
@@ -36,6 +37,14 @@ function App() {
             <Route path='/payment' element={<PaymentGateway/>}/>
             <Route path='/test-rules' element={<TestRules/>}/>
             <Route path='/weekly-outline' element={<WeeklyOutline/>}/>
+            <Route 
+                path='/admin' 
+                element={
+                    <ErrorBoundary>
+                        <AdminPortal />
+                    </ErrorBoundary>
+                }
+            />
           </Routes>
         </main>
         

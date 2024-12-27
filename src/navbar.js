@@ -79,9 +79,6 @@ const NavBar = () => {
                             Projects
                         </button>
                     </div>
-                    {/* <div className="navbar-nav">
-                        <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/course-signup">Course Signup</Link>
-                    </div> */}
                     <div className="navbar-nav">
                         <button 
                             onClick={() => scrollToSection('contact')}
@@ -115,10 +112,21 @@ const NavBar = () => {
                             </div>
                         </>
                     )}
+                    {isAdmin && (
+                        <div className="navbar-nav">
+                            <Link 
+                                className="nav-link" 
+                                to="/admin"
+                                style={{ color: "black", textAlign: "center" }}
+                            >
+                                Admin Portal
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </nav>
     );
-}
+};
 
 export default NavBar;
