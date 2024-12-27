@@ -24,13 +24,26 @@ const PaymentGateway = () => {
         try {
             const response = await api.post(endpoints.initializePayment, {
                 email: Cookies.get('token_email'),
-                amount: 50, // R50 application fee
-                reference: md5(Date.now().toString()),
+                name: Cookies.get('token_username'),
+                amount: 50,
                 planType: 'APPLICATION_FEE'
             });
 
-            if (response.data.paymentUrl) {
-                window.location.href = response.data.paymentUrl;
+            if (response.data) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'https://www.payfast.co.za/eng/process';
+
+                Object.entries(response.data).forEach(([key, value]) => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = value;
+                    form.appendChild(input);
+                });
+
+                document.body.appendChild(form);
+                form.submit();
             } else {
                 throw new Error('Payment initialization failed');
             }
