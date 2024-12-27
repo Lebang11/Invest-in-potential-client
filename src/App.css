@@ -37,3 +37,15 @@
     justify-content: center;
     align-items: center; 
 } */
+
+.navbar-toggler {
+    border: none; /* Remove border from the toggler button */
+}
+
+.navbar-toggler:focus {
+    outline: none; /* Remove outline on focus */
+}
+
+.navbar-toggler-icon {
+    border: none; /* Remove border from the icon */
+}
