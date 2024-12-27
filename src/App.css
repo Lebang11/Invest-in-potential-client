@@ -16,24 +16,24 @@
     justify-content: center; /* Center the items */
     width: 100%; /* Ensure it takes full width */
 }
-
+/* 
 .navbar-nav .nav-link {
-    text-align: center; /* Center text within the links */
-}
+    text-align: center; 
+} */
 
 /* src/App.css */
-.navbar-nav {
+/* .navbar-nav {
     display: flex;
     justify-content: center; /* Center the items */
-    width: 100%; /* Ensure it takes full width */
-}
+    /* width: 100%; /* Ensure it takes full width */
+/* } */
 
-.navbar-nav .nav-link {
-    text-align: center; /* Center text within the links */
+/* .navbar-nav .nav-link {
+    text-align: end; 
 }
 
 .navbar-nav .nav-item {
     display: flex;
-    justify-content: center; /* Center the nav items */
-    align-items: center; /* Align items vertically */
-}
+    justify-content: center;
+    align-items: center; 
+} */

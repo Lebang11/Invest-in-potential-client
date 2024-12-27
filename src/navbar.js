@@ -2,12 +2,13 @@ import Cookies from "js-cookie";
 import { Link, useNavigate } from 'react-router-dom';
 import { UserStatus } from './components/UserStatus';
 import { useState, useEffect } from "react";
-import { scrollToSection } from './utils/scrollUtils';
+import useScrollToSection from './utils/useScrollToSection';
 
 const NavBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
+    const scrollToSection = useScrollToSection();
 
     useEffect(() => {
         const checkLoginStatus = () => {
@@ -36,93 +37,84 @@ const NavBar = () => {
     };
 
     return ( 
-        <nav className="navbar navbar-expand-lg fixed-top" style={{
-            backgroundColor: "white",
-            borderBottom: "1px solid rgba(255, 255, 255, 0.0)"
-        }}>
+        <nav className="navbar navbar-expand-lg navbar-light fixed-top" style={{backgroundColor: "white"}}>
             <div className="container-fluid">
-                <div className="justify-content-center">
-                    <Link className="navbar-brand" to="/">
-                        <span>
-                            <img src="IIP official logo.png" className="logo-large" height="60" alt="IIP Logo" />
-                            <img src="IIP logo mark.png" className="logo-small" height="60" alt="IIP Logo" />
-                        </span>
-                    </Link>
-                </div>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <Link className="navbar-brand" to="/">
+                    <span>
+                        <img src="IIP official logo.png" className="logo-large" height="60" alt="IIP Logo" />
+                        <img src="IIP logo mark.png" className="logo-small" height="60" alt="IIP Logo" />
+                    </span>
+                </Link>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse justify-content-end me-4" id="navbarNavAltMarkup">
-                    <div className="navbar-nav">
-                        <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/gallery">Gallery</Link>
-                    </div>
-                    {isLoggedIn && (
-                        <div className="navbar-nav">
-                            <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/clients">Client Portal</Link>
-                        </div>
-                    )}
-                    <div className="navbar-nav">
-                        <button 
-                            onClick={() => scrollToSection('about')}
-                            className="nav-link"
-                            style={{fontSize:"0.8rem", background: 'none', border: 'none'}}
-                        >
-                            About
-                        </button>
-                    </div>
-                    <div className="navbar-nav">
-                        <button 
-                            onClick={() => scrollToSection('projects')}
-                            className="nav-link"
-                            style={{fontSize:"0.8rem", background: 'none', border: 'none'}}
-                        >
-                            Projects
-                        </button>
-                    </div>
-                    <div className="navbar-nav">
-                        <button 
-                            onClick={() => scrollToSection('contact')}
-                            className="nav-link"
-                            style={{fontSize:"0.8rem", background: 'none', border: 'none'}}
-                        >
-                            Contact Us
-                        </button>
-                    </div>
-                    {isLoggedIn ? (
-                        <>
-                            <UserStatus />
-                            <div className="navbar-nav">
-                                <button 
-                                    onClick={handleLogout}
-                                    className="nav-link"
-                                    style={{fontSize:"0.8rem", background: 'none', border: 'none'}}
-                                    title="Logout"
-                                >
-                                    <i className="bi bi-box-arrow-right text-danger"></i>
-                                </button>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="navbar-nav">
-                                <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/login">Login</Link>
-                            </div>
-                            <div className="navbar-nav">
-                                <Link style={{fontSize:"0.8rem"}} className="nav-link" to="/register">Register</Link>
-                            </div>
-                        </>
-                    )}
-                    {isAdmin && (
-                        <div className="navbar-nav">
-                            <Link 
-                                className="nav-link" 
-                                to="/admin"
-                                style={{ color: "black", textAlign: "center" }}
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/gallery">Gallery</Link>
+                        </li>
+                        {isLoggedIn && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/clients">Client Portal</Link>
+                            </li>
+                        )}
+                        <li className="nav-item">
+                            <button 
+                                onClick={() => scrollToSection('about', '/')}
+                                className="nav-link"
+                                style={{ background: 'none', border: 'none' }}
                             >
-                                Admin Portal
-                            </Link>
-                        </div>
-                    )}
+                                About
+                            </button>
+                        </li>
+                        <li className="nav-item">
+                            <button 
+                                onClick={() => scrollToSection('projects', '/')}
+                                className="nav-link"
+                                style={{ background: 'none', border: 'none' }}
+                            >
+                                Projects
+                            </button>
+                        </li>
+                        <li className="nav-item">
+                            <button 
+                                onClick={() => scrollToSection('contact', '/')}
+                                className="nav-link"
+                                style={{ background: 'none', border: 'none' }}
+                            >
+                                Contact Us
+                            </button>
+                        </li>
+                        {isLoggedIn ? (
+                            <>
+                                <UserStatus />
+                                <li className="nav-item">
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="nav-link"
+                                        style={{ background: 'none', border: 'none' }}
+                                        title="Logout"
+                                    >
+                                        <i className="bi bi-box-arrow-right text-danger"></i>
+                                    </button>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/login">Login</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/register">Register</Link>
+                                </li>
+                            </>
+                        )}
+                        {isAdmin && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/admin">Admin Portal</Link>
+                            </li>
+                        )}
+                    </ul>
                 </div>
             </div>
         </nav>
