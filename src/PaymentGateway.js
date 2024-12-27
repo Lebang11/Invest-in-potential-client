@@ -25,7 +25,8 @@ const PaymentGateway = () => {
             const response = await api.post(endpoints.initializePayment, {
                 email: Cookies.get('token_email'),
                 amount: 50, // R50 application fee
-                reference: md5(Date.now().toString())
+                reference: md5(Date.now().toString()),
+                planType: 'APPLICATION_FEE'
             });
 
             if (response.data.paymentUrl) {
