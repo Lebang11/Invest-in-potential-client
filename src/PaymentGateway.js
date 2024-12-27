@@ -5,6 +5,42 @@ import Cookies from 'js-cookie';
 import md5 from 'md5';
 
 const PaymentGateway = () => {
+    const [isLoading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userEmail = Cookies.get('token_email');
+        if (!userEmail) {
+            navigate('/login', { state: { from: '/payment' } });
+        }
+    }, [navigate]);
+
+    const handlePayment = async () => {
+        setLoading(true);
+        setError('');
+
+        try {
+            const response = await api.post(endpoints.initializePayment, {
+                email: Cookies.get('token_email'),
+                amount: 50, // R50 application fee
+                reference: md5(Date.now().toString())
+            });
+
+            if (response.data.paymentUrl) {
+                window.location.href = response.data.paymentUrl;
+            } else {
+                throw new Error('Payment initialization failed');
+            }
+        } catch (err) {
+            setError('Payment initialization failed. Please try again.');
+            console.error('Payment error:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div style={{ 
             marginTop: "100px", 
@@ -33,16 +69,23 @@ const PaymentGateway = () => {
                                 </ul>
                             </div>
 
-                            <div className="alert alert-warning rounded-0 mb-4" role="alert">
-                                <strong>Coming Soon!</strong> Our payment system is currently under maintenance. 
-                                Please check back later or contact us for alternative arrangements.
-                            </div>
+                            {error && (
+                                <div className="alert alert-danger rounded-0 mb-4">
+                                    {error}
+                                </div>
+                            )}
 
                             <button 
                                 className="btn btn-light rounded-0 w-100" 
-                                disabled={true}
+                                onClick={handlePayment}
+                                disabled={isLoading}
                             >
-                                Payment Currently Unavailable
+                                {isLoading ? (
+                                    <>
+                                        <span className="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
+                                        Processing...
+                                    </>
+                                ) : 'Proceed to Payment'}
                             </button>
                         </div>
                     </div>
