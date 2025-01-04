@@ -146,7 +146,8 @@ export const adminService = {
 
     updateAssessmentStatus: async (id, status) => {
         try {
-            const response = await api.patch(`/assessment/${id}/status`, { status });
+            const response = await api.put(`/assessment/status/${id}`, { status });
+            console.log(response.data);
             return response.data;
         } catch (error) {
             throw error.response?.data || error.message;

@@ -21,6 +21,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import PaymentStatus from './components/PaymentStatus';
 import AssessmentComplete from './components/AssessmentComplete';
+import Onboarding from './pages/Onboarding';
 
 function App() {
   
@@ -81,6 +82,7 @@ function App() {
                   <AdminPortal />
                 </ProtectedRoute>
               }/>
+              <Route path="/onboarding" element={<Onboarding />} />
             </Routes>
           </main>
           

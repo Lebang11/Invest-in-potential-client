@@ -331,7 +331,6 @@ const AdminPortal = () => {
                                 <div className="mb-4">
                                     <h6>Scores</h6>
                                     <p>Aptitude Score: {selectedAssessment.aptitudeScore.toFixed(1)}%</p>
-                                    <p>EQ Score: {selectedAssessment.eqScore.toFixed(1)}/5</p>
                                 </div>
 
                                 <div className="mb-4">
@@ -344,13 +343,13 @@ const AdminPortal = () => {
                                             <div className="options">
                                                 {item.question.options.map((option, optIndex) => (
                                                     <div key={optIndex} className={`mb-1 ${
-                                                        optIndex === parseInt(selectedAssessment.aptitudeAnswers[index]) ? 
-                                                            (item.correct ? 'text-success fw-bold' : 'text-danger fw-bold') : 
+                                                        optIndex === parseInt(selectedAssessment.aptitudeAnswers[index].answer) ? 
+                                                            (selectedAssessment.aptitudeAnswers[index].correct ? 'text-success fw-bold' : 'text-danger fw-bold') : 
                                                             optIndex === item.question.correct && !item.correct ? 
                                                                 'text-success' : ''
                                                     }`}>
                                                         {option} 
-                                                        {optIndex === parseInt(selectedAssessment.aptitudeAnswers[index]) && '(Selected)'} 
+                                                        {optIndex === parseInt(selectedAssessment.aptitudeAnswers[index].answer) && '(Selected)'} 
                                                         {optIndex === item.question.correct && !item.correct && '(Correct)'}
                                                     </div>
                                                 ))}
@@ -369,16 +368,13 @@ const AdminPortal = () => {
                                             <div className="options">
                                                 {item.question.options.map((option, optIndex) => (
                                                     <div key={optIndex} className={`mb-1 ${
-                                                        optIndex === parseInt(selectedAssessment.eqAnswers[index].answer) ? 'fw-bold text-light' : 'text-muted'
+                                                        optIndex === parseInt(selectedAssessment.eqAnswers[index].answer) ? 'fw-bold text-success' : 'text-muted'
                                                     }`}>
                                                         {option} 
                                                         {optIndex === parseInt(selectedAssessment.eqAnswers[index].answer) && '(Selected)'}
                                                     </div>
                                                 ))}
                                             </div>
-                                            <p className="mt-2 mb-0 small text-info">
-                                                Score: {selectedAssessment.eqAnswers[index].score}/5
-                                            </p>
                                         </div>
                                     ))}
                                 </div>
