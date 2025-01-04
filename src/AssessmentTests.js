@@ -12,7 +12,7 @@ const AssessmentTests = () => {
     const [answers, setAnswers] = useState({});
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [timeLeft, setTimeLeft] = useState(currentTest === 'aptitude' ? 2400 : 900); // 40 min for aptitude, 15 for EQ
+    const [timeLeft, setTimeLeft] = useState(2400); // 40 minutes for aptitude
     const [shuffledQuestions, setShuffledQuestions] = useState({
         aptitude: [],
         eq: []
@@ -22,6 +22,7 @@ const AssessmentTests = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
     const [hasPaid, setHasPaid] = useState(false);
+    const [startTime] = useState(new Date().toISOString()); // Store as ISO string
 
     // Shuffle questions on component mount
     useEffect(() => {
@@ -180,7 +181,8 @@ const AssessmentTests = () => {
                     aptitude: 2400 - timeLeft,
                     eq: currentTest === 'eq' ? 900 - timeLeft : 0
                 },
-                tabSwitches: tabSwitchCount
+                tabSwitches: tabSwitchCount,
+                startTime: startTime // Send ISO string
             });
 
             if (response.status === 201) {
