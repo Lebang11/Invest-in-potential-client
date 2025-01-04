@@ -13,6 +13,8 @@ const AdminPortal = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const [selectedAssessment, setSelectedAssessment] = useState(null);
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
 
     // Check if admin
     useEffect(() => {
@@ -71,6 +73,17 @@ const AdminPortal = () => {
         } catch (err) {
             setError('Failed to update assessment status');
             console.error(err);
+        }
+    };
+
+    const handleViewDetails = async (assessmentId) => {
+        try {
+            const response = await api.get(`/assessment/${assessmentId}/details`);
+            setSelectedAssessment(response.data);
+            setShowDetailsModal(true);
+        } catch (error) {
+            setError('Failed to fetch assessment details');
+            console.error(error);
         }
     };
 
@@ -280,9 +293,7 @@ const AdminPortal = () => {
                                                 <td>
                                                     <button 
                                                         className="btn btn-sm btn-outline-info"
-                                                        onClick={() => {
-                                                            // Add view details functionality
-                                                        }}
+                                                        onClick={() => handleViewDetails(assessment._id)}
                                                     >
                                                         View Details
                                                     </button>
@@ -296,6 +307,59 @@ const AdminPortal = () => {
                     </>
                 )}
             </div>
+
+            {/* Assessment Details Modal */}
+            {showDetailsModal && selectedAssessment && (
+                <div className="modal show d-block" tabIndex="-1">
+                    <div className="modal-dialog modal-lg">
+                        <div className="modal-content bg-dark text-white">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Assessment Details</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowDetailsModal(false)}></button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="mb-4">
+                                    <h6>Basic Information</h6>
+                                    <p>Email: {selectedAssessment.email}</p>
+                                    <p>Started: {new Date(selectedAssessment.startTime).toLocaleString()}</p>
+                                    <p>Completed: {new Date(selectedAssessment.completedAt).toLocaleString()}</p>
+                                    <p>Time Spent: {selectedAssessment.timeSpent.aptitude}s (Aptitude), {selectedAssessment.timeSpent.eq}s (EQ)</p>
+                                    <p>Tab Switches: {selectedAssessment.tabSwitches}</p>
+                                </div>
+                                
+                                <div className="mb-4">
+                                    <h6>Scores</h6>
+                                    <p>Aptitude Score: {selectedAssessment.aptitudeScore.toFixed(1)}%</p>
+                                    <p>EQ Score: {selectedAssessment.eqScore.toFixed(1)}/5</p>
+                                </div>
+
+                                <div className="mb-4">
+                                    <h6>Aptitude Questions</h6>
+                                    {selectedAssessment.aptitudeQuestions.map((item, index) => (
+                                        <div key={index} className={`mb-3 p-2 ${item.correct ? 'border-success' : 'border-danger'} border`}>
+                                            <p className="mb-2">{item.question.question}</p>
+                                            <p className="mb-0 small">
+                                                Answer: {item.question.options[item.answer]}
+                                                {!item.correct && ` (Correct: ${item.question.options[item.question.correct]})`}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="mb-4">
+                                    <h6>EQ Questions</h6>
+                                    {selectedAssessment.eqQuestions.map((item, index) => (
+                                        <div key={index} className="mb-3 p-2 border">
+                                            <p className="mb-2">{item.question.question}</p>
+                                            <p className="mb-0 small">Score: {item.score}/5</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

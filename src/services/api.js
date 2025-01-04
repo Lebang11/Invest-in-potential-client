@@ -137,7 +137,7 @@ export const adminService = {
 
     getAssessments: async () => {
         try {
-            const response = await api.get('/assessment/all');
+            const response = await api.get('/admin/assessments');
             return response.data;
         } catch (error) {
             throw error.response?.data || error.message;
