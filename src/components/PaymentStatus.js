@@ -58,7 +58,22 @@ const PaymentStatus = () => {
                 return (
                     <div className="alert alert-success">
                         <h4>Payment Successful!</h4>
-                        <p>Thank you for your payment. You will be redirected shortly...</p>
+                        <div className="mb-4">
+                            <p>Thank you for enrolling in our Investing In Potential course!</p>
+                            <p>Please check your email for important information about:</p>
+                            <ul className="text-start">
+                                <li>Course start date and schedule</li>
+                                <li>Learning platform access details</li>
+                                <li>Required preparation steps</li>
+                                <li>Contact information for support</li>
+                            </ul>
+                        </div>
+                        <button 
+                            className="btn btn-primary mt-3"
+                            onClick={() => navigate('/weekly-outline')}
+                        >
+                            View Course Outline
+                        </button>
                     </div>
                 );
             case 'failed':

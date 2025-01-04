@@ -23,6 +23,7 @@ import PaymentStatus from './components/PaymentStatus';
 import AssessmentComplete from './components/AssessmentComplete';
 import Onboarding from './pages/Onboarding';
 import PaymentProcessing from './pages/PaymentProcessing';
+import EnrollmentSuccess from './components/EnrollmentSuccess';
 
 function App() {
   
@@ -87,6 +88,11 @@ function App() {
               <Route path="/payment-processing" element={
                 <ProtectedRoute>
                   <PaymentProcessing />
+                </ProtectedRoute>
+              }/>
+              <Route path="/enrollment-success" element={
+                <ProtectedRoute>
+                  <EnrollmentSuccess />
                 </ProtectedRoute>
               }/>
             </Routes>

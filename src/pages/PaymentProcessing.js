@@ -41,6 +41,24 @@ const PaymentProcessing = () => {
                 const plan = planDetails[selectedPlan];
                 const finalPrice = location.state.isWethinkcode ? plan.discountedPrice : plan.price;
 
+                if (location.state.isWethinkcode && finalPrice === 0) {
+                    setLoading(false);
+                    return navigate('/enrollment-success', {
+                        state: {
+                            message: "Thank you for enrolling in our Investing In Potential course!",
+                            details: [
+                                "As a WeThinkCode_ student, you've been automatically enrolled.",
+                                "Please check your email for important information about:",
+                                "• Course start date and schedule",
+                                "• Learning platform access details",
+                                "• Required preparation steps",
+                                "• Contact information for support",
+                                "• Click below to view the course outline and get started!"
+                            ]
+                        }
+                    });
+                }
+
                 console.log('Sending payment data:', {
                     amount: finalPrice,
                     email: user.email,
