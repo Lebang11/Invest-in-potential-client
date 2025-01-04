@@ -164,20 +164,28 @@ const AssessmentTests = () => {
     };
 
     const handleSubmit = async () => {
-        setLoading(true);
-        setError('');
-
         try {
-            const response = await api.post(endpoints.assessment, {
-                email: Cookies.get('token_email'),
-                answers: answers,
-                testType: 'both'
-            });
+            setLoading(true);
             
-            navigate('/course-signup');
-        } catch (err) {
+            const response = await api.post('/assessment/submit', {
+                email: user.email,
+                aptitudeAnswers: answers,
+                eqAnswers: answers,
+                timeSpent: {
+                    aptitude: 2400 - timeLeft,
+                    eq: currentTest === 'eq' ? 900 - timeLeft : 0
+                },
+                tabSwitches: tabSwitchCount
+            });
+
+            if (response.status === 201) {
+                navigate('/assessment-complete');
+            } else {
+                throw new Error('Failed to submit assessment');
+            }
+        } catch (error) {
+            console.error('Assessment submission failed:', error);
             setError('Failed to submit assessment. Please try again.');
-            console.error(err);
         } finally {
             setLoading(false);
         }
