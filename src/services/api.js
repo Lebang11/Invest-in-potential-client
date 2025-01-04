@@ -137,7 +137,16 @@ export const adminService = {
 
     getAssessments: async () => {
         try {
-            const response = await api.get('/admin/assessments');
+            const response = await api.get('/assessment/all');
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
+
+    updateAssessmentStatus: async (id, status) => {
+        try {
+            const response = await api.patch(`/assessment/${id}/status`, { status });
             return response.data;
         } catch (error) {
             throw error.response?.data || error.message;

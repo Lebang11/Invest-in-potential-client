@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react';
 import { api, endpoints } from './config/api';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import { adminService } from './services/api';
 
 const AdminPortal = () => {
-    const [activeTab, setActiveTab] = useState('users');
+    const [activeTab, setActiveTab] = useState('dashboard');
     const [users, setUsers] = useState([]);
     const [payments, setPayments] = useState([]);
     const [assessments, setAssessments] = useState([]);
-    const [stats, setStats] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     // Check if admin
@@ -24,50 +24,36 @@ const AdminPortal = () => {
     // Fetch data based on active tab
     useEffect(() => {
         const fetchData = async () => {
-            setIsLoading(true);
-            setError('');
             try {
-                let data;
-                switch (activeTab) {
-                    case 'users':
-                        data = await api.get(endpoints.admin.users);
-                        setUsers(data.data);
-                        break;
-                    case 'payments':
-                        data = await api.get(endpoints.admin.payments);
-                        setPayments(data.data);
-                        break;
-                    case 'assessments':
-                        data = await api.get(endpoints.admin.assessments);
-                        setAssessments(data.data);
-                        break;
-                    case 'dashboard':
-                        data = await api.get(endpoints.admin.stats);
-                        setStats(data.data);
-                        break;
-                    default:
-                        break;
+                setLoading(true);
+                if (activeTab === 'users') {
+                    // Fetch users...
+                } else if (activeTab === 'payments') {
+                    const paymentsData = await adminService.getPayments();
+                    setPayments(paymentsData);
+                } else if (activeTab === 'assessments') {
+                    const assessmentsData = await adminService.getAssessments();
+                    setAssessments(assessmentsData);
                 }
             } catch (err) {
                 setError('Failed to fetch data');
                 console.error(err);
             } finally {
-                setIsLoading(false);
+                setLoading(false);
             }
         };
+
         fetchData();
     }, [activeTab]);
 
-    const handlePaymentStatusUpdate = async (paymentId, newStatus) => {
+    const handleAssessmentStatusUpdate = async (assessmentId, newStatus) => {
         try {
-            await api.patch(`${endpoints.admin.payments}/${paymentId}`, {
-                status: newStatus
-            });
-            // Refresh payments data
-            const response = await api.get(endpoints.admin.payments);
-            setPayments(response.data);
+            await adminService.updateAssessmentStatus(assessmentId, newStatus);
+            // Refresh assessments data
+            const response = await adminService.getAssessments();
+            setAssessments(response);
         } catch (err) {
-            setError('Failed to update payment status');
+            setError('Failed to update assessment status');
             console.error(err);
         }
     };
@@ -125,7 +111,7 @@ const AdminPortal = () => {
                     </div>
                 )}
 
-                {isLoading ? (
+                {loading ? (
                     <div className="text-center">
                         <div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span>
@@ -248,19 +234,42 @@ const AdminPortal = () => {
                                             <th>EQ Score</th>
                                             <th>Status</th>
                                             <th>Completion Date</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {assessments.map(assessment => (
                                             <tr key={assessment._id}>
                                                 <td>{assessment.email}</td>
-                                                <td>{assessment.scores?.aptitude || 'N/A'}</td>
-                                                <td>{assessment.scores?.eq || 'N/A'}</td>
-                                                <td>{assessment.status}</td>
+                                                <td>{assessment.aptitudeScore}</td>
+                                                <td>{assessment.eqScore}</td>
                                                 <td>
-                                                    {assessment.completionTime?.aptitude ? 
-                                                        new Date(assessment.completionTime.aptitude).toLocaleDateString() 
-                                                        : 'Not Completed'}
+                                                    <select 
+                                                        className="form-select form-select-sm"
+                                                        value={assessment.status}
+                                                        onChange={(e) => handleAssessmentStatusUpdate(
+                                                            assessment._id, 
+                                                            e.target.value
+                                                        )}
+                                                    >
+                                                        <option value="pending">Pending</option>
+                                                        <option value="reviewed">Reviewed</option>
+                                                        <option value="passed">Passed</option>
+                                                        <option value="failed">Failed</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    {new Date(assessment.completedAt).toLocaleDateString()}
+                                                </td>
+                                                <td>
+                                                    <button 
+                                                        className="btn btn-sm btn-outline-info"
+                                                        onClick={() => {
+                                                            // Add view details functionality
+                                                        }}
+                                                    >
+                                                        View Details
+                                                    </button>
                                                 </td>
                                             </tr>
                                         ))}
