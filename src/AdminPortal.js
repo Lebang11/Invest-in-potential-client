@@ -79,6 +79,7 @@ const AdminPortal = () => {
     const handleViewDetails = async (assessmentId) => {
         try {
             const response = await api.get(`/assessment/${assessmentId}/details`);
+            console.log('Response:', response.data);
             setSelectedAssessment(response.data);
             setShowDetailsModal(true);
         } catch (error) {
@@ -336,12 +337,24 @@ const AdminPortal = () => {
                                 <div className="mb-4">
                                     <h6>Aptitude Questions</h6>
                                     {selectedAssessment.aptitudeQuestions.map((item, index) => (
-                                        <div key={index} className={`mb-3 p-2 ${item.correct ? 'border-success' : 'border-danger'} border`}>
-                                            <p className="mb-2">{item.question.question}</p>
-                                            <p className="mb-0 small">
-                                                Answer: {item.question.options[item.answer]}
-                                                {!item.correct && ` (Correct: ${item.question.options[item.question.correct]})`}
+                                        <div key={index} className={`mb-3 p-3 rounded ${selectedAssessment.aptitudeAnswers[index].correct ? 'bg-success bg-opacity-25' : 'bg-danger bg-opacity-25'}`}>
+                                            <p className="mb-2">
+                                                <strong>Question {index + 1}:</strong> {item.question.question}
                                             </p>
+                                            <div className="options">
+                                                {item.question.options.map((option, optIndex) => (
+                                                    <div key={optIndex} className={`mb-1 ${
+                                                        optIndex === parseInt(selectedAssessment.aptitudeAnswers[index]) ? 
+                                                            (item.correct ? 'text-success fw-bold' : 'text-danger fw-bold') : 
+                                                            optIndex === item.question.correct && !item.correct ? 
+                                                                'text-success' : ''
+                                                    }`}>
+                                                        {option} 
+                                                        {optIndex === parseInt(selectedAssessment.aptitudeAnswers[index]) && '(Selected)'} 
+                                                        {optIndex === item.question.correct && !item.correct && '(Correct)'}
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -349,12 +362,31 @@ const AdminPortal = () => {
                                 <div className="mb-4">
                                     <h6>EQ Questions</h6>
                                     {selectedAssessment.eqQuestions.map((item, index) => (
-                                        <div key={index} className="mb-3 p-2 border">
-                                            <p className="mb-2">{item.question.question}</p>
-                                            <p className="mb-0 small">Score: {item.score}/5</p>
+                                        <div key={index} className="mb-3 p-3 rounded bg-secondary bg-opacity-10">
+                                            <p className="mb-2">
+                                                <strong>Question {index + 1}:</strong> {item.question.question}
+                                            </p>
+                                            <div className="options">
+                                                {item.question.options.map((option, optIndex) => (
+                                                    <div key={optIndex} className={`mb-1 ${
+                                                        optIndex === parseInt(selectedAssessment.eqAnswers[index].answer) ? 'fw-bold text-light' : 'text-muted'
+                                                    }`}>
+                                                        {option} 
+                                                        {optIndex === parseInt(selectedAssessment.eqAnswers[index].answer) && '(Selected)'}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <p className="mt-2 mb-0 small text-info">
+                                                Score: {selectedAssessment.eqAnswers[index].score}/5
+                                            </p>
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowDetailsModal(false)}>
+                                    Close
+                                </button>
                             </div>
                         </div>
                     </div>
