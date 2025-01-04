@@ -1,39 +1,25 @@
-import Cookies from "js-cookie";
 import { Link, useNavigate } from 'react-router-dom';
 import { UserStatus } from './components/UserStatus';
 import { useState, useEffect } from "react";
 import useScrollToSection from './utils/useScrollToSection';
+import { useAuth } from './context/AuthContext';
+import { authService } from './services/api';
 
 const NavBar = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { user, updateUser } = useAuth();
     const navigate = useNavigate();
     const scrollToSection = useScrollToSection();
 
-    useEffect(() => {
-        const checkLoginStatus = () => {
-            const token = Cookies.get('token_id');
-            const adminStatus = Cookies.get('token_admin');
-            setIsLoggedIn(!!token);
-            setIsAdmin(adminStatus === 'true');
-        };
-
-        checkLoginStatus();
-        const interval = setInterval(checkLoginStatus, 1500);
-        
-        return () => clearInterval(interval);
-    }, []);
-
-    const handleLogout = () => {
-        Cookies.remove('token_id');
-        Cookies.remove('token_email');
-        Cookies.remove('token_username');
-        Cookies.remove('token_admin');
-        Cookies.remove('token_points');
-        setIsLoggedIn(false);
-        setIsAdmin(false);
-        alert('Logged Out!');
-        navigate('/');
+    const handleLogout = async () => {
+        try {
+            await authService.logout();
+            updateUser(null);
+            navigate('/');
+            alert('Logged out successfully!');
+        } catch (error) {
+            console.error('Logout error:', error);
+            alert('Error logging out. Please try again.');
+        }
     };
 
     return ( 
@@ -53,7 +39,7 @@ const NavBar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/gallery">Gallery</Link>
                         </li>
-                        {isLoggedIn && (
+                        {user && (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/clients">Client Portal</Link>
                             </li>
@@ -85,7 +71,7 @@ const NavBar = () => {
                                 Contact Us
                             </button>
                         </li>
-                        {isLoggedIn ? (
+                        {user ? (
                             <>
                                 <UserStatus />
                                 <li className="nav-item">
@@ -109,7 +95,7 @@ const NavBar = () => {
                                 </li>
                             </>
                         )}
-                        {isAdmin && (
+                        {user && user.isAdmin && (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/admin">Admin Portal</Link>
                             </li>

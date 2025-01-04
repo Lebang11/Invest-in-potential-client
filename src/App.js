@@ -17,39 +17,70 @@ import PaymentGateway from './PaymentGateway';
 import TestRules from './TestRules';
 import WeeklyOutline from './components/WeeklyOutline';
 import AdminPortal from './AdminPortal';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import PaymentStatus from './components/PaymentStatus';
 
 function App() {
   
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <NavBar/>
-        <main>
-          <Routes>
-            <Route path='/' element={<Landing/>}/>
-            <Route path='/register' element={<Register/>}/>
-            <Route path='/login' element={<Login/>}/>
-            <Route path='/gallery' element={<Gallery/>}/>
-            <Route path='/members' element={<Members/>}/>
-            <Route path='/clients' element={<ClientPortal/>}/>
-            <Route path='/course-signup' element={<CourseSignup/>}/>
-            <Route path='/assessment' element={<AssessmentTests/>}/>
-            <Route path='/payment' element={<PaymentGateway/>}/>
-            <Route path='/test-rules' element={<TestRules/>}/>
-            <Route path='/weekly-outline' element={<WeeklyOutline/>}/>
-            <Route 
-                path='/admin' 
-                element={
-                    <ErrorBoundary>
-                        <AdminPortal />
-                    </ErrorBoundary>
-                }
-            />
-          </Routes>
-        </main>
-        
-        <Footer/>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <NavBar/>
+          <main>
+            <Routes>
+              <Route path='/' element={<Landing/>}/>
+              <Route path='/register' element={<Register/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/gallery' element={<Gallery/>}/>
+              <Route path='/members' element={
+                <ProtectedRoute requireAdmin={true}>
+                  <Members/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/clients' element={
+                <ProtectedRoute>
+                  <ClientPortal/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/course-signup' element={
+                <ProtectedRoute>
+                  <CourseSignup/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/assessment' element={
+                <ProtectedRoute>
+                  <AssessmentTests/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/payment' element={
+                <ProtectedRoute>
+                  <PaymentGateway/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/payment/status' element={
+                <ProtectedRoute>
+                  <PaymentStatus/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/test-rules' element={
+                <ProtectedRoute>
+                  <TestRules/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/weekly-outline' element={<WeeklyOutline/>}/>
+              <Route path='/admin' element={
+                <ProtectedRoute requireAdmin={true}>
+                  <AdminPortal />
+                </ProtectedRoute>
+              }/>
+            </Routes>
+          </main>
+          
+          <Footer/>
+        </BrowserRouter>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

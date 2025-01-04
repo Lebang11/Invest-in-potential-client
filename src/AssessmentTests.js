@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { api, endpoints } from './config/api';
 import { aptitudeQuestions, eqQuestions } from './data/assessmentQuestions';
+import { useAuth } from './context/AuthContext';
+import { assessmentService } from './services/api';
 
 const AssessmentTests = () => {
     const [currentTest, setCurrentTest] = useState('aptitude');
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [answers, setAnswers] = useState({});
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [timeLeft, setTimeLeft] = useState(currentTest === 'aptitude' ? 2400 : 900); // 40 min for aptitude, 15 for EQ
     const [shuffledQuestions, setShuffledQuestions] = useState({
@@ -18,6 +20,8 @@ const AssessmentTests = () => {
     const [tabSwitchCount, setTabSwitchCount] = useState(0);
     const maxTabSwitches = 3;
     const navigate = useNavigate();
+    const { user } = useAuth();
+    const [hasPaid, setHasPaid] = useState(false);
 
     // Shuffle questions on component mount
     useEffect(() => {
@@ -110,11 +114,36 @@ const AssessmentTests = () => {
     const progress = ((currentTest === 'eq' ? 30 : 0) + currentQuestion + 1) / 45 * 100;
 
     useEffect(() => {
-        const userEmail = Cookies.get('token_email');
-        if (!userEmail) {
-            navigate('/login', { state: { from: '/assessment' } });
-        }
-    }, [navigate]);
+        const checkPaymentAndAssessment = async () => {
+            try {
+                if (!user) {
+                    navigate('/login', { state: { from: '/assessment' } });
+                    return;
+                }
+
+                const paymentStatus = await assessmentService.checkPaymentStatus(user.email);
+                
+                if (!paymentStatus.paid) {
+                    navigate('/payment', { 
+                        state: { 
+                            message: 'Please complete payment to access the assessment'
+                        }
+                    });
+                    return;
+                }
+
+                setHasPaid(true);
+                setLoading(false);
+
+            } catch (error) {
+                console.error('Error checking payment status:', error);
+                setError('Failed to verify payment status. Please try again.');
+                setLoading(false);
+            }
+        };
+
+        checkPaymentAndAssessment();
+    }, [user, navigate]);
 
     const handleAnswer = (answerIndex) => {
         setAnswers({
@@ -153,6 +182,46 @@ const AssessmentTests = () => {
             setLoading(false);
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className="container mt-5 pt-5">
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="container mt-5 pt-5">
+                <div className="alert alert-danger" role="alert">
+                    {error}
+                    <div className="mt-3">
+                        <button 
+                            className="btn btn-primary me-2"
+                            onClick={() => window.location.reload()}
+                        >
+                            Try Again
+                        </button>
+                        <button 
+                            className="btn btn-outline-primary"
+                            onClick={() => navigate('/')}
+                        >
+                            Go Home
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!hasPaid) {
+        return null; // Component will redirect in useEffect
+    }
 
     return (
         <div style={{ 

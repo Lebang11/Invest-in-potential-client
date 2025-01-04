@@ -1,40 +1,45 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { api, endpoints } from './config/api';
-import Cookies from 'js-cookie';
-import md5 from 'md5';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import { paymentService } from './services/api';
 
 const PaymentGateway = () => {
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const { user } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const userEmail = Cookies.get('token_email');
-        if (!userEmail) {
+        if (!user) {
             navigate('/login', { state: { from: '/payment' } });
         }
-    }, [navigate]);
+    }, [user, navigate]);
 
     const handlePayment = async () => {
         setLoading(true);
         setError('');
 
         try {
-            const response = await api.post(endpoints.initializePayment, {
-                email: Cookies.get('token_email'),
-                name: Cookies.get('token_username'),
-                amount: 50,
+            const paymentData = {
+                email: user.email,
+                name: user.name,
+                amount: 50, // Assessment fee amount
                 planType: 'APPLICATION_FEE'
-            });
+            };
 
-            if (response.data) {
+            console.log('Sending payment data:', paymentData); // Add logging
+
+            const response = await paymentService.initializePayment(paymentData);
+
+            if (response) {
+                // Create and submit PayFast form
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = 'https://www.payfast.co.za/eng/process';
 
-                Object.entries(response.data).forEach(([key, value]) => {
+                // Add all PayFast fields from the response
+                Object.entries(response).forEach(([key, value]) => {
                     const input = document.createElement('input');
                     input.type = 'hidden';
                     input.name = key;
@@ -48,59 +53,56 @@ const PaymentGateway = () => {
                 throw new Error('Payment initialization failed');
             }
         } catch (err) {
-            setError('Payment initialization failed. Please try again.');
             console.error('Payment error:', err);
+            setError(err.message || 'Payment initialization failed. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ 
-            marginTop: "100px", 
-            marginBottom: "50px",
-            backgroundColor: "rgb(20, 20, 20)",
-            color: "white",
-            padding: "50px 0"
-        }} className="w-100">
-            <div className="container">
-                <div className="row justify-content-center">
-                    <div className="col-md-6">
-                        <div className="border border-light p-4">
-                            <h2 className="text-center mb-4">Application Fee Payment</h2>
+        <div className="container mt-5 pt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h2 className="card-title text-center mb-4">Assessment Fee Payment</h2>
                             
-                            <div className="text-center mb-4">
-                                <h3 className="mb-3">R50</h3>
-                                <p className="small mb-4">Assessment and Application Fee</p>
-                            </div>
-
-                            <div className="alert alert-light rounded-0 mb-4" role="alert">
-                                <strong>Note:</strong> This fee is non-refundable and covers:
-                                <ul className="mt-2 mb-0">
-                                    <li>Aptitude Assessment (40 minutes)</li>
-                                    <li>Emotional Intelligence Assessment (15 minutes)</li>
-                                    <li>Application Processing</li>
-                                </ul>
-                            </div>
-
                             {error && (
-                                <div className="alert alert-danger rounded-0 mb-4">
+                                <div className="alert alert-danger" role="alert">
                                     {error}
                                 </div>
                             )}
 
-                            <button 
-                                className="btn btn-light rounded-0 w-100" 
-                                onClick={handlePayment}
-                                disabled={isLoading}
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <span className="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
-                                        Processing...
-                                    </>
-                                ) : 'Proceed to Payment'}
-                            </button>
+                            <div className="mb-4">
+                                <h5>Payment Details:</h5>
+                                <p className="mb-2">Amount: R50.00</p>
+                                <p className="mb-2">Type: Assessment Fee</p>
+                                <p className="mb-4">This fee is for accessing the assessment tests.</p>
+                            </div>
+
+                            <div className="d-grid gap-2">
+                                <button 
+                                    className="btn btn-primary"
+                                    onClick={handlePayment}
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            Processing...
+                                        </>
+                                    ) : (
+                                        'Pay Now'
+                                    )}
+                                </button>
+                            </div>
+
+                            <div className="mt-3 text-center">
+                                <small className="text-muted">
+                                    Secure payments powered by PayFast
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>

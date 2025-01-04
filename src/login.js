@@ -1,50 +1,37 @@
-import { api, endpoints } from './config/api';
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { authService } from './services/api';
+import { useAuth } from './context/AuthContext';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
+    const { updateUser } = useAuth();
+    const location = useLocation();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordConfirm, setPasswordConfirm] = useState('');
     const [error, setError] = useState('');
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const navigate = useNavigate();
-
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        setLoading(true);
+        setIsLoading(true);
         
-        api.post(endpoints.login, {
-            email,
-            password
-        })
-        .then(response => {
-            console.log(response.data);
-            Cookies.set('token_id', response.data._id, { expires: 7 });
-            Cookies.set('token_email', response.data.email, { expires: 7 });
-            Cookies.set('token_username', response.data.name, { expires: 7 });
-            Cookies.set('token_admin', response.data.admin, { expires: 7 });
-            Cookies.set('token_points', response.data.points, { expires: 7 });
+        try {
+            const userData = await authService.login(email, password);
+            updateUser(userData);
 
-            alert('Logged In!');
-            setEmail('');
-            setPassword('');
-            setLoading(false);
-            navigate('/');
-        })
-        .catch(err => {
-            setError(err.response.data.message);
-            setPassword('');
-            setLoading(false);
-        });
-    }
-
-
+            // Navigate to the protected page they tried to visit or default route
+            const from = location.state?.from || (userData.admin ? '/admin' : '/clients');
+            navigate(from, { replace: true });
+            
+        } catch (error) {
+            setError(error.message || 'Login failed. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
         <div className="reg-form d-flex justify-content-center align-items-center ">
@@ -66,14 +53,13 @@ const Login = () => {
                     
                     <p className="text-danger text-center">{error}</p>
                     <div className="mt-3 d-flex justify-content-center">
-                        {!isLoading &&  <button type="submit" class='btn btn-primary'>Submit</button>}
+                    {!isLoading &&  <button type="submit" class='btn btn-primary'>Submit</button>}
                         {isLoading && 
                         <button class="btn btn-secondary" type="button" disabled>
                         <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                         Loading...
                         </button>
-                        }
-                    </div>
+                        }                    </div>
                 </form>
             </div>
         </div> 

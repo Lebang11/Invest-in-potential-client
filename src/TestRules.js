@@ -1,7 +1,58 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import { assessmentService } from './services/api';
 
 const TestRules = () => {
+    const [isVerifying, setIsVerifying] = useState(true);
+    const { user } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const verifyPayment = async () => {
+            try {
+                if (!user) {
+                    navigate('/login', { state: { from: '/test-rules' } });
+                    return;
+                }
+
+                const paymentStatus = await assessmentService.checkPaymentStatus(user.email);
+                
+                if (!paymentStatus.paid) {
+                    navigate('/payment', { 
+                        state: { 
+                            message: 'Please complete payment to access the assessment'
+                        }
+                    });
+                    return;
+                }
+
+                setIsVerifying(false);
+
+            } catch (error) {
+                console.error('Payment verification failed:', error);
+                navigate('/payment', { 
+                    state: { 
+                        error: 'Payment verification failed. Please try again.'
+                    }
+                });
+            }
+        };
+
+        verifyPayment();
+    }, [user, navigate]);
+
+    if (isVerifying) {
+        return (
+            <div className="container mt-5 pt-5">
+                <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div style={{ 
