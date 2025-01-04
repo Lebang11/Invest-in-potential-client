@@ -9,6 +9,7 @@ const AdminPortal = () => {
     const [users, setUsers] = useState([]);
     const [payments, setPayments] = useState([]);
     const [assessments, setAssessments] = useState([]);
+    const [stats, setStats] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -34,6 +35,9 @@ const AdminPortal = () => {
                 } else if (activeTab === 'assessments') {
                     const assessmentsData = await adminService.getAssessments();
                     setAssessments(assessmentsData);
+                } else if (activeTab === 'dashboard') {
+                    const statsData = await adminService.getDashboardStats();
+                    setStats(statsData);
                 }
             } catch (err) {
                 setError('Failed to fetch data');
@@ -45,6 +49,18 @@ const AdminPortal = () => {
 
         fetchData();
     }, [activeTab]);
+
+    const handlePaymentStatusUpdate = async (paymentId, newStatus) => {
+        try {
+            await adminService.updatePaymentStatus(paymentId, newStatus);
+            // Refresh payments data
+            const response = await adminService.getPayments();
+            setPayments(response);
+        } catch (err) {
+            setError('Failed to update payment status');
+            console.error(err);
+        }
+    };
 
     const handleAssessmentStatusUpdate = async (assessmentId, newStatus) => {
         try {
