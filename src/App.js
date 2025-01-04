@@ -22,6 +22,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import PaymentStatus from './components/PaymentStatus';
 import AssessmentComplete from './components/AssessmentComplete';
 import Onboarding from './pages/Onboarding';
+import PaymentProcessing from './pages/PaymentProcessing';
 
 function App() {
   
@@ -83,6 +84,11 @@ function App() {
                 </ProtectedRoute>
               }/>
               <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/payment-processing" element={
+                <ProtectedRoute>
+                  <PaymentProcessing />
+                </ProtectedRoute>
+              }/>
             </Routes>
           </main>
           

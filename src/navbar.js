@@ -100,6 +100,11 @@ const NavBar = () => {
                                 <Link className="nav-link" to="/admin">Admin Portal</Link>
                             </li>
                         )}
+                        {user && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/course-signup">Course</Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>

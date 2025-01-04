@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../config/api';
+import { assessmentService } from '../services/api';
+import intakeInfo from '../utils/intakeInfo';
 
 const Onboarding = () => {
     const { user } = useAuth();
@@ -10,51 +11,81 @@ const Onboarding = () => {
     const [assessment, setAssessment] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedPlan, setSelectedPlan] = useState(null);
+    const [isWethinkcode, setIsWethinkcode] = useState(false);
+    const [wethinkcodeName, setWethinkcodeName] = useState('');
+    const [wethinkcodeEmail, setWethinkcodeEmail] = useState('');
+    const [isVerified, setIsVerified] = useState(false);
 
     const plans = [
         {
-            id: 'standard',
-            name: 'Standard Plan',
-            price: 'R15,000',
+            id: 'basic',
+            name: 'Basic Plan',
+            regularPrice: 300,
+            discountedPrice: 0,
             features: [
                 'Full course access',
-                'Group mentoring sessions',
-                'Basic career support',
-                'Course completion certificate'
+                'Basic learning materials',
+                'Community forum access',
+                'Monthly Q&A sessions'
             ]
         },
         {
             id: 'premium',
             name: 'Premium Plan',
-            price: 'R25,000',
+            regularPrice: 450,
+            discountedPrice: 0,
             features: [
-                'Everything in Standard Plan',
-                'One-on-one mentoring sessions',
-                'Priority support',
-                'Advanced career placement assistance',
-                'Industry networking events'
+                'Everything in Basic Plan',
+                'Participate in final business project',
+                'Potential IIP funding',
+                'Business registration support',
+                'Weekly group mentoring'
             ]
         },
         {
             id: 'vip',
             name: 'VIP Plan',
-            price: 'R35,000',
+            regularPrice: 700,
+            discountedPrice: 250,
             features: [
                 'Everything in Premium Plan',
-                'Personal career coach',
-                'Guaranteed internship placement',
-                'Extended post-course support',
-                'Exclusive workshops and events'
+                'Access to IIP partners & investors',
+                'Personal 1-on-1 mentoring',
+                'Priority support',
+                'Exclusive workshops and events',
+                'Direct business guidance'
             ]
         }
     ];
 
+    const getPrice = (regularPrice, discountedPrice) => {
+        return isWethinkcode ? discountedPrice : regularPrice;
+    };
+
+    const isValidWethinkCodeEmail = (email) => {
+        return email.endsWith('@student.wethinkcode.co.za') || 
+               email.endsWith('@wethinkcode.co.za');
+    };
+
+    const handleWethinkCodeVerification = (e) => {
+        e.preventDefault();
+        if (!isValidWethinkCodeEmail(wethinkcodeEmail)) {
+            alert('Please enter a valid WeThinkCode_ email address');
+            return;
+        }
+        if (!wethinkcodeName.trim()) {
+            alert('Please enter your full name');
+            return;
+        }
+        setIsVerified(true);
+    };
+
     useEffect(() => {
         const fetchAssessmentDetails = async () => {
             try {
-                const response = await api.get(`/assessment/status/${user.email}`);
-                setAssessment(response.data);
-                if (response.data.status !== 'passed') {
+                const response = await assessmentService.checkAssessmentStatus(user.email);
+                setAssessment(response);
+                if (response.status !== 'passed') {
                     navigate('/');
                 }
             } catch (error) {
@@ -88,10 +119,11 @@ const Onboarding = () => {
         }
         
         try {
-            navigate('/payment', { 
+            navigate('/payment-processing', { 
                 state: { 
                     plan: selectedPlan,
-                    email: user.email
+                    email: user.email,
+                    isWethinkcode: isWethinkcode && isVerified
                 }
             });
         } catch (error) {
@@ -104,7 +136,7 @@ const Onboarding = () => {
         return (
             <div className="container py-5" style={{ marginTop: "80px" }}>
                 <div className="text-center">
-                    <div className="spinner-border text-light" role="status">
+                    <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </div>
                 </div>
@@ -113,83 +145,166 @@ const Onboarding = () => {
     }
 
     return (
-        <div className="container py-5" style={{ marginTop: "80px" }}>
-            <div className="row justify-content-center">
-                <div className="col-md-10">
-                    <h1 className="text-center mb-5">Welcome to Investing in Potential!</h1>
+        <div style={{ 
+            marginTop: "100px", 
+            marginBottom: "50px",
+            backgroundColor: "rgb(20, 20, 20)",
+            color: "white",
+            padding: "50px 0"
+        }} className="w-100">
+            <div className="container">
+                <div className="text-center mb-5">
+                    <h2 className="display-4 text-light mb-3">Congratulations!</h2>
+                    <p className="lead text-light mb-4">
+                        Welcome to Investing in Potential! You've successfully passed our assessment process.
+                        We're excited to have you join our next cohort of aspiring developers.
+                    </p>
+                    <h3 className="display-6 text-light mb-4">Choose Your Learning Path</h3>
+                </div>
 
-                    <div className="card bg-dark text-white mb-4">
-                        <div className="card-body">
-                            <h3 className="card-title">Getting Started</h3>
-                            <p>We're excited to have you join our next cohort starting February 5th, 2024!</p>
-                            
-                            <h5 className="mt-4">Choose Your Plan</h5>
-                            <div className="row mt-3">
-                                {plans.map(plan => (
-                                    <div key={plan.id} className="col-md-4 mb-3">
-                                        <div className={`card h-100 ${
-                                            selectedPlan === plan.id ? 'border-primary' : ''
-                                        }`}>
-                                            <div className="card-body">
-                                                <h5 className="card-title">{plan.name}</h5>
-                                                <h6 className="card-subtitle mb-2 text-muted">{plan.price}</h6>
-                                                <ul className="list-unstyled">
-                                                    {plan.features.map((feature, index) => (
-                                                        <li key={index}>✓ {feature}</li>
-                                                    ))}
-                                                </ul>
-                                                <button
-                                                    className={`btn ${
-                                                        selectedPlan === plan.id ? 'btn-primary' : 'btn-outline-primary'
-                                                    } w-100`}
-                                                    onClick={() => handlePlanSelect(plan.id)}
-                                                >
-                                                    {selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                <div className="text-center mb-5">
+                    <div className="row justify-content-center">
+                        <div className="col-md-8">
+                            <div className="border border-light p-4 mb-4">
+                                <div className="alert alert-info rounded-0 mb-4" role="alert">
+                                    <strong>Course Start Date:</strong> {intakeInfo.currentIntake.startDate}
+                                    <br />
+                                    <strong>Application Deadline:</strong> {intakeInfo.currentIntake.applicationDeadline}
+                                </div>
                             </div>
-                            
-                            <h5 className="mt-4">Program Structure</h5>
-                            <ul>
-                                <li>12-week intensive program</li>
-                                <li>Live online sessions</li>
-                                <li>Hands-on projects</li>
-                                <li>One-on-one mentoring</li>
-                                <li>Career support</li>
-                            </ul>
-
-                            <h5 className="mt-4">What You'll Learn</h5>
-                            <ul>
-                                <li>Full-Stack Web Development</li>
-                                <li>Modern JavaScript & Frameworks</li>
-                                <li>Database Design & Management</li>
-                                <li>API Development</li>
-                                <li>DevOps & Deployment</li>
-                            </ul>
-
-                            <h5 className="mt-4">Next Steps</h5>
-                            <ol>
-                                <li>Select your preferred plan</li>
-                                <li>Process payment</li>
-                                <li>Join our student Slack community</li>
-                                <li>Set up your development environment</li>
-                                <li>Complete pre-course materials</li>
-                            </ol>
                         </div>
                     </div>
+                </div>
 
-                    <div className="text-center">
-                        <button 
-                            className="btn btn-primary btn-lg"
-                            onClick={handleEnrollment}
-                            disabled={!selectedPlan}
-                        >
-                            {selectedPlan ? 'Proceed to Payment' : 'Select a Plan to Continue'}
-                        </button>
+                <div className="text-center mb-4">
+                    <div className="form-check form-switch d-inline-block">
+                        <input
+                            className="form-check-input"
+                            type="checkbox"
+                            id="wethinkcode-switch"
+                            checked={isWethinkcode}
+                            onChange={(e) => {
+                                setIsWethinkcode(e.target.checked);
+                                if (!e.target.checked) {
+                                    setIsVerified(false);
+                                    setWethinkcodeName('');
+                                    setWethinkcodeEmail('');
+                                }
+                            }}
+                        />
+                        <label className="form-check-label ms-2 text-light" htmlFor="wethinkcode-switch">
+                            I am a WeThinkCode_ student
+                        </label>
                     </div>
+                </div>
+
+                {isWethinkcode && !isVerified && (
+                    <div className="row justify-content-center mb-5">
+                        <div className="col-md-6">
+                            <div className="border border-light p-4">
+                                <h4 className="text-light mb-4">WeThinkCode_ Student Verification</h4>
+                                <form onSubmit={handleWethinkCodeVerification}>
+                                    <div className="mb-3">
+                                        <label className="form-label text-light">Full Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control rounded-0"
+                                            value={wethinkcodeName}
+                                            onChange={(e) => setWethinkcodeName(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label text-light">WeThinkCode_ Email</label>
+                                        <input
+                                            type="email"
+                                            className="form-control rounded-0"
+                                            value={wethinkcodeEmail}
+                                            onChange={(e) => setWethinkcodeEmail(e.target.value)}
+                                            placeholder="example@student.wethinkcode.co.za"
+                                            required
+                                        />
+                                    </div>
+                                    <button type="submit" className="btn btn-light rounded-0 w-100">
+                                        Verify & Continue
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {(!isWethinkcode || isVerified) && <div className="row justify-content-center">
+                    {plans.map((plan) => (
+                        <div key={plan.id} className="col-md-4 mb-4">
+                            <div className={`card h-100 rounded-0 ${
+                                selectedPlan === plan.id ? 'border-light' : ''
+                            }`} style={{
+                                backgroundColor: "rgb(20, 20, 20)",
+                                borderColor: "white",
+                                position: "relative"
+                            }}>
+                                {plan.id === 'premium' && (
+                                    <div style={{
+                                        position: "absolute",
+                                        top: "-12px",
+                                        right: "20px",
+                                        backgroundColor: "#28a745",
+                                        color: "white",
+                                        padding: "4px 12px",
+                                        fontSize: "0.8rem",
+                                        fontWeight: "500",
+                                        letterSpacing: "0.5px"
+                                    }}>
+                                        RECOMMENDED
+                                    </div>
+                                )}
+                                <div className="card-header text-center border-light rounded-0">
+                                    <h3 className="my-0 fw-normal text-light">{plan.name}</h3>
+                                </div>
+                                <div className="card-body d-flex flex-column">
+                                    <h1 className="card-title text-center text-light">
+                                        R{getPrice(plan.regularPrice, plan.discountedPrice)}
+                                        <small className="fw-light">/once-off</small>
+                                    </h1>
+                                    {isWethinkcode && plan.discountedPrice === 0 && (
+                                        <div className="badge bg-success mb-3 align-self-center">
+                                            FREE for WeThinkCode_ students
+                                        </div>
+                                    )}
+                                    <ul className="list-unstyled text-light mt-3 mb-4">
+                                        {plan.features.map((feature, index) => (
+                                            <li key={index} className="mb-2">
+                                                <i className="bi bi-check-lg me-2" style={{ color: "#28a745" }}></i>
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <button
+                                        onClick={() => handlePlanSelect(plan.id)}
+                                        className={`btn ${
+                                            selectedPlan === plan.id ? 'btn-light' : 'btn-outline-light'
+                                        } btn-lg w-100 rounded-0 mt-auto`}
+                                    >
+                                        {selectedPlan === plan.id ? 'Selected' : 'Select Plan'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>}
+
+                <div className="text-center">
+                    <button 
+                        className="btn btn-light btn-lg rounded-0"
+                        onClick={handleEnrollment}
+                        disabled={!selectedPlan}
+                    >
+                        {selectedPlan ? 'Proceed to Payment' : 'Select a Plan to Continue'}
+                    </button>
+                    <p className="text-light mt-3">
+                        Need help choosing? Contact our admissions team at admissions@investinginpotential.com
+                    </p>
                 </div>
             </div>
         </div>

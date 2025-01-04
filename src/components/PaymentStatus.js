@@ -1,90 +1,109 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { paymentService } from '../services/api';
+import { useAuth } from '../context/AuthContext';
 
 const PaymentStatus = () => {
     const [status, setStatus] = useState('checking');
-    const [searchParams] = useSearchParams();
+    const [paymentDetails, setPaymentDetails] = useState(null);
+    const location = useLocation();
     const navigate = useNavigate();
-    
+    const { user } = useAuth();
+
     useEffect(() => {
-        const checkPayment = async () => {
+        const checkPaymentStatus = async () => {
             try {
-                const reference = searchParams.get('reference');
+                // Get reference from URL parameters
+                const params = new URLSearchParams(location.search);
+                const reference = params.get('pf_payment_id');
+                const type = params.get('type');
+
                 if (!reference) {
                     setStatus('error');
                     return;
                 }
 
                 const response = await paymentService.getPaymentStatus(reference);
-                
+                setPaymentDetails(response);
+
                 if (response.status === 'COMPLETE') {
                     setStatus('success');
-                    // Wait 3 seconds then redirect to assessment
-                    setTimeout(() => {
-                        navigate('/test-rules');
-                    }, 3000);
-                } else {
+                    // If it's an enrollment payment, redirect to appropriate page
+                    if (type === 'enrollment') {
+                        setTimeout(() => {
+                            navigate('/clients');
+                        }, 5000);
+                    }
+                } else if (response.status === 'FAILED' || response.status === 'CANCELLED') {
                     setStatus('failed');
+                } else {
+                    setStatus('pending');
                 }
             } catch (error) {
-                console.error('Payment status check failed:', error);
+                console.error('Error checking payment status:', error);
                 setStatus('error');
             }
         };
 
-        checkPayment();
-    }, [searchParams, navigate]);
+        if (user) {
+            checkPaymentStatus();
+        } else {
+            navigate('/login');
+        }
+    }, [location, navigate, user]);
 
-    const statusMessages = {
-        checking: {
-            title: 'Checking Payment Status',
-            message: 'Please wait while we verify your payment...',
-            class: 'info'
-        },
-        success: {
-            title: 'Payment Successful!',
-            message: 'Your payment has been confirmed. Redirecting to assessment...',
-            class: 'success'
-        },
-        failed: {
-            title: 'Payment Failed',
-            message: 'Your payment could not be processed. Please try again.',
-            class: 'danger'
-        },
-        error: {
-            title: 'Error',
-            message: 'An error occurred while checking payment status.',
-            class: 'danger'
+    const renderStatusMessage = () => {
+        switch (status) {
+            case 'success':
+                return (
+                    <div className="alert alert-success">
+                        <h4>Payment Successful!</h4>
+                        <p>Thank you for your payment. You will be redirected shortly...</p>
+                    </div>
+                );
+            case 'failed':
+                return (
+                    <div className="alert alert-danger">
+                        <h4>Payment Failed</h4>
+                        <p>Your payment was not successful. Please try again.</p>
+                        <button 
+                            className="btn btn-primary mt-3"
+                            onClick={() => navigate(-1)}
+                        >
+                            Return to Payment
+                        </button>
+                    </div>
+                );
+            case 'error':
+                return (
+                    <div className="alert alert-danger">
+                        <h4>Error</h4>
+                        <p>There was an error processing your payment status.</p>
+                        <button 
+                            className="btn btn-primary mt-3"
+                            onClick={() => navigate(-1)}
+                        >
+                            Go Back
+                        </button>
+                    </div>
+                );
+            default:
+                return (
+                    <div className="text-center">
+                        <div className="spinner-border text-primary" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                        <p className="mt-3">Checking payment status...</p>
+                    </div>
+                );
         }
     };
 
-    const currentStatus = statusMessages[status];
-
     return (
-        <div className="container mt-5 pt-5">
+        <div className="container py-5" style={{ marginTop: "80px" }}>
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <div className={`alert alert-${currentStatus.class}`} role="alert">
-                        <h4 className="alert-heading">{currentStatus.title}</h4>
-                        <p>{currentStatus.message}</p>
-                        {(status === 'failed' || status === 'error') && (
-                            <div className="mt-3">
-                                <button 
-                                    className="btn btn-primary me-2"
-                                    onClick={() => navigate('/payment')}
-                                >
-                                    Try Again
-                                </button>
-                                <button 
-                                    className="btn btn-outline-primary"
-                                    onClick={() => navigate('/')}
-                                >
-                                    Go Home
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                    {renderStatusMessage()}
                 </div>
             </div>
         </div>

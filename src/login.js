@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { authService } from './services/api';
 import { useAuth } from './context/AuthContext';
 
 const Login = () => {
@@ -16,6 +14,8 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        
         try {
             await login(email, password);
             navigate(from);

@@ -94,15 +94,19 @@ export const jobService = {
 export const paymentService = {
     initializePayment: async (paymentData) => {
         try {
-            const response = await api.post('/payment/initialize', paymentData, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            const response = await api.post('/payment/initialize', paymentData);
             return response.data;
         } catch (error) {
-            console.error('Payment initialization error:', error);
-            throw error.response?.data || error.message;
+            throw error.response?.data || error;
+        }
+    },
+
+    initializeEnrollmentPayment: async (paymentData) => {
+        try {
+            const response = await api.post('/payment/initialize-enrollment', paymentData);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error;
         }
     },
 
@@ -189,6 +193,7 @@ export const assessmentService = {
     checkAssessmentStatus: async (email) => {
         try {
             const response = await api.get(`/assessment/status/${email}`);
+            console.log(response.data);
             return response.data;
         } catch (error) {
             throw error.response?.data || error.message;
