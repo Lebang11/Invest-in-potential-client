@@ -175,6 +175,14 @@ export const assessmentService = {
         } catch (error) {
             throw error.response?.data || error.message;
         }
+    },
+    checkAssessmentStatus: async (email) => {
+        try {
+            const response = await api.get(`/assessment/status/${email}`);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
     }
 };
 

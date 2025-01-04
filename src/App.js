@@ -20,6 +20,7 @@ import AdminPortal from './AdminPortal';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import PaymentStatus from './components/PaymentStatus';
+import AssessmentComplete from './components/AssessmentComplete';
 
 function App() {
   
@@ -52,6 +53,11 @@ function App() {
               <Route path='/assessment' element={
                 <ProtectedRoute>
                   <AssessmentTests/>
+                </ProtectedRoute>
+              }/>
+              <Route path='/assessment-complete' element={
+                <ProtectedRoute>
+                  <AssessmentComplete/>
                 </ProtectedRoute>
               }/>
               <Route path='/payment' element={

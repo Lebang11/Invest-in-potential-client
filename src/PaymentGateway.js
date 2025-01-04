@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
-import { paymentService } from './services/api';
+import { paymentService, assessmentService } from './services/api';
 
 const PaymentGateway = () => {
     const [isLoading, setLoading] = useState(false);
@@ -11,9 +11,24 @@ const PaymentGateway = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) {
-            navigate('/login', { state: { from: '/payment' } });
-        }
+        const checkExistingPayment = async () => {
+            try {
+                if (!user) {
+                    navigate('/login', { state: { from: '/payment' } });
+                    return;
+                }
+
+                const paymentStatus = await assessmentService.checkPaymentStatus(user.email);
+                if (paymentStatus.paid) {
+                    navigate('/test-rules');
+                }
+            } catch (error) {
+                console.error('Error checking payment status:', error);
+                setError('Failed to verify payment status');
+            }
+        };
+
+        checkExistingPayment();
     }, [user, navigate]);
 
     const handlePayment = async () => {

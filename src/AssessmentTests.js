@@ -125,10 +125,15 @@ const AssessmentTests = () => {
                 
                 if (!paymentStatus.paid) {
                     navigate('/payment', { 
-                        state: { 
-                            message: 'Please complete payment to access the assessment'
-                        }
+                        state: { message: 'Please complete payment to access the assessment' }
                     });
+                    return;
+                }
+
+                // Check if assessment already exists
+                const assessmentStatus = await assessmentService.checkAssessmentStatus(user.email);
+                if (assessmentStatus.exists) {
+                    navigate('/assessment-complete');
                     return;
                 }
 
@@ -136,8 +141,8 @@ const AssessmentTests = () => {
                 setLoading(false);
 
             } catch (error) {
-                console.error('Error checking payment status:', error);
-                setError('Failed to verify payment status. Please try again.');
+                console.error('Error checking status:', error);
+                setError('Failed to verify status. Please try again.');
                 setLoading(false);
             }
         };
@@ -179,6 +184,8 @@ const AssessmentTests = () => {
             });
 
             if (response.status === 201) {
+                setError('');
+                alert('Assessment submitted successfully!');
                 navigate('/assessment-complete');
             } else {
                 throw new Error('Failed to submit assessment');

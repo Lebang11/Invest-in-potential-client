@@ -9,7 +9,7 @@ const TestRules = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const verifyPayment = async () => {
+        const verifyPaymentAndAssessment = async () => {
             try {
                 if (!user) {
                     navigate('/login', { state: { from: '/test-rules' } });
@@ -20,26 +20,28 @@ const TestRules = () => {
                 
                 if (!paymentStatus.paid) {
                     navigate('/payment', { 
-                        state: { 
-                            message: 'Please complete payment to access the assessment'
-                        }
+                        state: { message: 'Please complete payment to access the assessment' }
                     });
+                    return;
+                }
+
+                const assessmentStatus = await assessmentService.checkAssessmentStatus(user.email);
+                if (assessmentStatus.exists) {
+                    navigate('/assessment-complete');
                     return;
                 }
 
                 setIsVerifying(false);
 
             } catch (error) {
-                console.error('Payment verification failed:', error);
+                console.error('Verification failed:', error);
                 navigate('/payment', { 
-                    state: { 
-                        error: 'Payment verification failed. Please try again.'
-                    }
+                    state: { error: 'Verification failed. Please try again.' }
                 });
             }
         };
 
-        verifyPayment();
+        verifyPaymentAndAssessment();
     }, [user, navigate]);
 
     if (isVerifying) {
