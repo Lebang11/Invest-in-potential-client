@@ -15,9 +15,9 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
         const email = Cookies.get('user_email');
-        const isAdmin = Cookies.get('token_admin') === 'true';
+        const admin = Cookies.get('token_admin') === 'true';
         const token = Cookies.get('token_id');
-        return email && token ? { email, admin: isAdmin, token } : null;
+        return email && token ? { email, isAdmin: admin, token } : null;
     });
 
     const login = async (email, password) => {
@@ -26,7 +26,10 @@ export const AuthProvider = ({ children }) => {
             Cookies.set('user_email', userData.email, { expires: 7 });
             Cookies.set('token_admin', userData.admin, { expires: 7 });
             Cookies.set('token_id', userData._id, { expires: 7 });
-            setUser(userData);
+            setUser({
+                ...userData,
+                isAdmin: userData.admin
+            });
             return userData;
         } catch (error) {
             throw error;

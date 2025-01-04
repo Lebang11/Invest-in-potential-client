@@ -71,6 +71,16 @@ const NavBar = () => {
                                 Contact Us
                             </button>
                         </li>
+                        {user && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/course-signup">Course</Link>
+                            </li>
+                        )}
+                         {user?.isAdmin && (
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/admin">Admin Portal</Link>
+                            </li>
+                        )}
                         {user ? (
                             <>
                                 <UserStatus />
@@ -95,16 +105,8 @@ const NavBar = () => {
                                 </li>
                             </>
                         )}
-                        {user && user.isAdmin && (
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/admin">Admin Portal</Link>
-                            </li>
-                        )}
-                        {user && (
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/course-signup">Course</Link>
-                            </li>
-                        )}
+                       
+                        
                     </ul>
                 </div>
             </div>
