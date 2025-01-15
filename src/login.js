@@ -38,7 +38,15 @@ const Login = () => {
                     <div className="col-md-5">
                         <div className="card border-0 shadow">
                             <div className="card-body p-5">
-                                <h2 className="text-center mb-4 text-dark">Welcome Back</h2>
+                                <div className="text-center mb-4">
+                                    <img 
+                                        src="IIP logo mark.png" 
+                                        alt="IIP Logo" 
+                                        height="80" 
+                                        className="mb-3"
+                                    />
+                                    <h2 className="text-dark">Welcome Back</h2>
+                                </div>
                                 {message && (
                                     <div className="alert alert-info rounded-0" role="alert">
                                         {message}
