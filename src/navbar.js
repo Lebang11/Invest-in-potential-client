@@ -3,23 +3,14 @@ import { UserStatus } from './components/UserStatus';
 import { useState, useEffect } from "react";
 import useScrollToSection from './utils/useScrollToSection';
 import { useAuth } from './context/AuthContext';
-import { authService } from './services/api';
 
 const NavBar = () => {
-    const { user, updateUser } = useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
     const scrollToSection = useScrollToSection();
 
-    const handleLogout = async () => {
-        try {
-            await authService.logout();
-            updateUser(null);
-            navigate('/');
-            alert('Logged out successfully!');
-        } catch (error) {
-            console.error('Logout error:', error);
-            alert('Error logging out. Please try again.');
-        }
+    const handleLogout = () => {
+        logout();
     };
 
     return ( 

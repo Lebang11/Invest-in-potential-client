@@ -255,6 +255,81 @@ const WeeklyOutline = () => {
                     ))}
                 </div>
 
+                {/* Points System & Client Portal Access */}
+                <motion.div 
+                    ref={ref}
+                    initial={{opacity: 0, y: 20}}
+                    animate={inView ? {opacity: 1, y: 0} : {opacity: 0, y: 20}}
+                    transition={{duration: 0.5}}
+                    className="mt-5 mb-5"
+                >
+                    <h2 className="text-center mb-4">Points System & Client Portal Access</h2>
+                    <div className="row">
+                        <div className="col-md-6 mb-4">
+                            <div className="card h-100 bg-dark text-light border-light rounded-0">
+                                <div className="card-header border-light">
+                                    <h5 className="mb-0">Points System</h5>
+                                </div>
+                                <div className="card-body">
+                                    <p>Our points system tracks your participation and engagement throughout the course. Points are awarded for:</p>
+                                    <ul className="list-unstyled mt-3">
+                                        <li className="mb-2">
+                                            <i className="bi bi-star-fill me-2 text-warning"></i>
+                                            Active participation in sessions
+                                        </li>
+                                        <li className="mb-2">
+                                            <i className="bi bi-star-fill me-2 text-warning"></i>
+                                            Completing assignments and projects
+                                        </li>
+                                        <li className="mb-2">
+                                            <i className="bi bi-star-fill me-2 text-warning"></i>
+                                            Contributing to discussions
+                                        </li>
+                                        <li className="mb-2">
+                                            <i className="bi bi-star-fill me-2 text-warning"></i>
+                                            Helping fellow students
+                                        </li>
+                                    </ul>
+                                    <div className="alert alert-info rounded-0 mt-3">
+                                        Your points determine your eligibility for client job opportunities and future project considerations.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                            <div className="card h-100 bg-dark text-light border-light rounded-0">
+                                <div className="card-header border-light">
+                                    <h5 className="mb-0">Client Portal Access</h5>
+                                </div>
+                                <div className="card-body">
+                                    <p className="mb-3">Premium & VIP Members get exclusive access to our client portal with the following benefits:</p>
+                                    <ul className="list-unstyled">
+                                        <li className="mb-2">
+                                            <i className="bi bi-check-lg me-2" style={{ color: "#28a745" }}></i>
+                                            Access to client job board
+                                        </li>
+                                        <li className="mb-2">
+                                            <i className="bi bi-check-lg me-2" style={{ color: "#28a745" }}></i>
+                                            Submit proposals for projects
+                                        </li>
+                                        <li className="mb-2">
+                                            <i className="bi bi-check-lg me-2" style={{ color: "#28a745" }}></i>
+                                            View client requirements
+                                        </li>
+                                        <li className="mb-2">
+                                            <i className="bi bi-check-lg me-2" style={{ color: "#28a745" }}></i>
+                                            Direct client communication
+                                        </li>
+                                    </ul>
+                                    <div className="alert alert-success rounded-0 mt-3">
+                                        Client portal access is available to both Premium and VIP members throughout the course duration.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+
                 {/* Updated enrollment section */}
                 <div className="text-center mt-5 mb-5">
                     {applicationOpen ? (

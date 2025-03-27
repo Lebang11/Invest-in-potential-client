@@ -42,12 +42,9 @@ export const authService = {
         }
     },
 
-    logout: async () => {
-        try {
-            await api.post('/logout');
-        } catch (error) {
-            console.error('Logout error:', error);
-        }
+    logout: () => {
+        // No API call needed, just a placeholder for consistency
+        return true;
     }
 };
 
