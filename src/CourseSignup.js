@@ -188,34 +188,10 @@ const CourseSignup = () => {
                             <div className="row justify-content-center">
                                 <div className="col-md-8">
                                     <div className="border border-light p-4 mb-4">
-                                        <div className="alert alert-info rounded-0 mb-4" role="alert">
-                                            <strong>Course Start Date:</strong> {intakeInfo.currentIntake.startDate}
+                                        <div className="alert alert-warning rounded-0 mb-4" role="alert">
+                                            <strong>Applications are currently closed</strong>
                                             <br />
-                                            <strong>Application Deadline:</strong> {intakeInfo.currentIntake.applicationDeadline}
-                                        </div>
-                                        
-                                        {!applicationOpen && (
-                                            <div className="alert alert-warning rounded-0 mb-4" role="alert">
-                                                <strong>Applications for this intake are closed.</strong>
-                                                <br />
-                                                Please contact us for information about future opportunities.
-                                            </div>
-                                        )}
-
-                                        <h4 className="text-light mb-3">Application Process</h4>
-                                        <p className="text-light mb-2" style={{ fontSize: "0.9rem" }}>
-                                            To ensure the highest quality of learning experience for all participants, 
-                                            our admission process includes the following steps:
-                                        </p>
-                                        <ol className="text-start text-light" style={{ fontSize: "0.9rem" }}>
-                                            <li className="mb-2">Submit application with R50 application fee</li>
-                                            <li className="mb-2">Complete Aptitude and Emotional Intelligence (EQ) assessment tests</li>
-                                            <li className="mb-2">Receive admission decision within 48 hours</li>
-                                            <li className="mb-2">Upon acceptance, select your preferred plan below</li>
-                                        </ol>
-                                        <div className="alert alert-light rounded-0 mt-3" role="alert" style={{ fontSize: "0.8rem" }}>
-                                            <strong>Note:</strong> The R50 application fee is non-refundable and covers the cost of assessment tests. 
-                                            Only candidates who pass both the Aptitude and Emotional Intelligence assessments will be eligible to join our programs.
+                                            Our next intake dates will be announced soon. Please check back later or contact us for more information.
                                         </div>
                                     </div>
                                 </div>

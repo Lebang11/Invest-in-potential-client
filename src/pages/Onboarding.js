@@ -154,12 +154,11 @@ const Onboarding = () => {
         }} className="w-100">
             <div className="container">
                 <div className="text-center mb-5">
-                    <h2 className="display-4 text-light mb-3">Congratulations!</h2>
+                    <h2 className="display-4 text-light mb-3">Applications Currently Closed</h2>
                     <p className="lead text-light mb-4">
-                        Welcome to Investing in Potential! You've successfully passed our assessment process.
-                        We're excited to have you join our next cohort of aspiring developers.
+                        Thank you for your interest! We are currently not accepting new applications. 
+                        Please check back later for updates on our next intake dates.
                     </p>
-                    <h3 className="display-6 text-light mb-4">Choose Your Learning Path</h3>
                 </div>
 
                 <div className="text-center mb-5">

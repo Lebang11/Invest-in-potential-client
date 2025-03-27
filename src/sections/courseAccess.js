@@ -40,7 +40,7 @@ const CourseAccess = () => {
                                 <div className="d-flex justify-content-center gap-3">
                                     <Link 
                                         to="/course-signup" 
-                                        className="btn btn-light rounded-0 mt-3"
+                                        className="btn btn-light disabled rounded-0 mt-3"
                                     >
                                         Enroll Now
                                     </Link>

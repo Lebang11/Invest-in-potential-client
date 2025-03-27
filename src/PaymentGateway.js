@@ -80,44 +80,17 @@ const PaymentGateway = () => {
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card">
-                        <div className="card-body">
-                            <h2 className="card-title text-center mb-4">Assessment Fee Payment</h2>
-                            
-                            {error && (
-                                <div className="alert alert-danger" role="alert">
-                                    {error}
-                                </div>
-                            )}
-
-                            <div className="mb-4">
-                                <h5>Payment Details:</h5>
-                                <p className="mb-2">Amount: R50.00</p>
-                                <p className="mb-2">Type: Assessment Fee</p>
-                                <p className="mb-4">This fee is for accessing the assessment tests.</p>
+                        <div className="card-body text-center">
+                            <h2 className="card-title mb-4">Applications Currently Closed</h2>
+                            <div className="alert alert-info">
+                                We are not accepting new applications at this time. Please check back later for updates on our next intake dates.
                             </div>
-
-                            <div className="d-grid gap-2">
-                                <button 
-                                    className="btn btn-primary"
-                                    onClick={handlePayment}
-                                    disabled={isLoading}
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                            Processing...
-                                        </>
-                                    ) : (
-                                        'Pay Now'
-                                    )}
-                                </button>
-                            </div>
-
-                            <div className="mt-3 text-center">
-                                <small className="text-muted">
-                                    Secure payments powered by PayFast
-                                </small>
-                            </div>
+                            <button 
+                                className="btn btn-primary"
+                                onClick={() => navigate('/')}
+                            >
+                                Return to Home
+                            </button>
                         </div>
                     </div>
                 </div>
